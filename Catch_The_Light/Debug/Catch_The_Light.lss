@@ -3,31 +3,31 @@ Catch_The_Light.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000010  00800100  000001be  00000252  2**0
+  0 .data         00000010  00800100  00000294  00000328  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000001be  00000000  00000000  00000094  2**1
+  1 .text         00000294  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000002  00800110  00800110  00000262  2**0
+  2 .bss          00000002  00800110  00800110  00000338  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000262  2**0
+  3 .comment      00000030  00000000  00000000  00000338  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000294  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000368  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000038  00000000  00000000  000002d4  2**0
+  5 .debug_aranges 00000048  00000000  00000000  000003a8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000b4d  00000000  00000000  0000030c  2**0
+  6 .debug_info   00000be5  00000000  00000000  000003f0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000992  00000000  00000000  00000e59  2**0
+  7 .debug_abbrev 00000a06  00000000  00000000  00000fd5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000003c6  00000000  00000000  000017eb  2**0
+  8 .debug_line   0000041f  00000000  00000000  000019db  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000054  00000000  00000000  00001bb4  2**2
+  9 .debug_frame  00000074  00000000  00000000  00001dfc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000502  00000000  00000000  00001c08  2**0
+ 10 .debug_str    00000518  00000000  00000000  00001e70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000161  00000000  00000000  0000210a  2**0
+ 11 .debug_loc    000001c9  00000000  00000000  00002388  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000028  00000000  00000000  0000226b  2**0
+ 12 .debug_ranges 00000038  00000000  00000000  00002551  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -91,8 +91,8 @@ Disassembly of section .text:
   c0:	11 e0       	ldi	r17, 0x01	; 1
   c2:	a0 e0       	ldi	r26, 0x00	; 0
   c4:	b1 e0       	ldi	r27, 0x01	; 1
-  c6:	ee eb       	ldi	r30, 0xBE	; 190
-  c8:	f1 e0       	ldi	r31, 0x01	; 1
+  c6:	e4 e9       	ldi	r30, 0x94	; 148
+  c8:	f2 e0       	ldi	r31, 0x02	; 2
   ca:	02 c0       	rjmp	.+4      	; 0xd0 <__do_copy_data+0x10>
   cc:	05 90       	lpm	r0, Z+
   ce:	0d 92       	st	X+, r0
@@ -113,161 +113,352 @@ Disassembly of section .text:
   e0:	a2 31       	cpi	r26, 0x12	; 18
   e2:	b2 07       	cpc	r27, r18
   e4:	e1 f7       	brne	.-8      	; 0xde <.do_clear_bss_loop>
-  e6:	0e 94 d0 00 	call	0x1a0	; 0x1a0 <main>
-  ea:	0c 94 dd 00 	jmp	0x1ba	; 0x1ba <_exit>
+  e6:	0e 94 24 01 	call	0x248	; 0x248 <main>
+  ea:	0c 94 48 01 	jmp	0x290	; 0x290 <_exit>
 
 000000ee <__bad_interrupt>:
   ee:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000000f2 <Cycle_lights>:
+000000f2 <FlashPort>:
     }
+}
+
+void FlashPort()
+{
+	if(Flashreg < 4 || Flashreg > 12)
+  f2:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
+  f6:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
+  fa:	9c 01       	movw	r18, r24
+  fc:	24 50       	subi	r18, 0x04	; 4
+  fe:	31 09       	sbc	r19, r1
+ 100:	29 30       	cpi	r18, 0x09	; 9
+ 102:	31 05       	cpc	r19, r1
+ 104:	80 f0       	brcs	.+32     	; 0x126 <FlashPort+0x34>
+	{
+		PORTD |= (1<< Ledtab[Flashreg]);
+ 106:	4b b1       	in	r20, 0x0b	; 11
+ 108:	fc 01       	movw	r30, r24
+ 10a:	e0 50       	subi	r30, 0x00	; 0
+ 10c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 10e:	21 e0       	ldi	r18, 0x01	; 1
+ 110:	30 e0       	ldi	r19, 0x00	; 0
+ 112:	c9 01       	movw	r24, r18
+ 114:	00 80       	ld	r0, Z
+ 116:	02 c0       	rjmp	.+4      	; 0x11c <FlashPort+0x2a>
+ 118:	88 0f       	add	r24, r24
+ 11a:	99 1f       	adc	r25, r25
+ 11c:	0a 94       	dec	r0
+ 11e:	e2 f7       	brpl	.-8      	; 0x118 <FlashPort+0x26>
+ 120:	84 2b       	or	r24, r20
+ 122:	8b b9       	out	0x0b, r24	; 11
+ 124:	08 95       	ret
+	}
+	else if(Flashreg < 8)
+ 126:	88 30       	cpi	r24, 0x08	; 8
+ 128:	91 05       	cpc	r25, r1
+ 12a:	84 f4       	brge	.+32     	; 0x14c <FlashPort+0x5a>
+	{
+		PORTC |= (1<< Ledtab[Flashreg]);
+ 12c:	48 b1       	in	r20, 0x08	; 8
+ 12e:	fc 01       	movw	r30, r24
+ 130:	e0 50       	subi	r30, 0x00	; 0
+ 132:	ff 4f       	sbci	r31, 0xFF	; 255
+ 134:	21 e0       	ldi	r18, 0x01	; 1
+ 136:	30 e0       	ldi	r19, 0x00	; 0
+ 138:	c9 01       	movw	r24, r18
+ 13a:	00 80       	ld	r0, Z
+ 13c:	02 c0       	rjmp	.+4      	; 0x142 <FlashPort+0x50>
+ 13e:	88 0f       	add	r24, r24
+ 140:	99 1f       	adc	r25, r25
+ 142:	0a 94       	dec	r0
+ 144:	e2 f7       	brpl	.-8      	; 0x13e <FlashPort+0x4c>
+ 146:	84 2b       	or	r24, r20
+ 148:	88 b9       	out	0x08, r24	; 8
+ 14a:	08 95       	ret
+	}
+	else
+	{
+		PORTB |= (1<< Ledtab[Flashreg]);
+ 14c:	45 b1       	in	r20, 0x05	; 5
+ 14e:	fc 01       	movw	r30, r24
+ 150:	e0 50       	subi	r30, 0x00	; 0
+ 152:	ff 4f       	sbci	r31, 0xFF	; 255
+ 154:	21 e0       	ldi	r18, 0x01	; 1
+ 156:	30 e0       	ldi	r19, 0x00	; 0
+ 158:	c9 01       	movw	r24, r18
+ 15a:	00 80       	ld	r0, Z
+ 15c:	02 c0       	rjmp	.+4      	; 0x162 <FlashPort+0x70>
+ 15e:	88 0f       	add	r24, r24
+ 160:	99 1f       	adc	r25, r25
+ 162:	0a 94       	dec	r0
+ 164:	e2 f7       	brpl	.-8      	; 0x15e <FlashPort+0x6c>
+ 166:	84 2b       	or	r24, r20
+ 168:	85 b9       	out	0x05, r24	; 5
+ 16a:	08 95       	ret
+
+0000016c <Cycle_lights>:
+	}
 }
 
 void Cycle_lights()
 {
 	PORTD &= 0x0; //turn off all led
-  f2:	8b b1       	in	r24, 0x0b	; 11
-  f4:	1b b8       	out	0x0b, r1	; 11
+ 16c:	8b b1       	in	r24, 0x0b	; 11
+ 16e:	1b b8       	out	0x0b, r1	; 11
 	PORTB &= 0x0;
-  f6:	85 b1       	in	r24, 0x05	; 5
-  f8:	15 b8       	out	0x05, r1	; 5
+ 170:	85 b1       	in	r24, 0x05	; 5
+ 172:	15 b8       	out	0x05, r1	; 5
 	PORTC &= 0x0;
-  fa:	88 b1       	in	r24, 0x08	; 8
-  fc:	18 b8       	out	0x08, r1	; 8
-	//int Pin = Ledtab[Flashreg];
-	if(Flashreg < 4 || Flashreg > 12)
-  fe:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
- 102:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
- 106:	9c 01       	movw	r18, r24
- 108:	24 50       	subi	r18, 0x04	; 4
- 10a:	31 09       	sbc	r19, r1
- 10c:	29 30       	cpi	r18, 0x09	; 9
- 10e:	31 05       	cpc	r19, r1
- 110:	80 f0       	brcs	.+32     	; 0x132 <Cycle_lights+0x40>
-	{
-		//PORTD = Ledtab[Flashreg];
-		PORTD |= (1<< Ledtab[Flashreg]);
- 112:	4b b1       	in	r20, 0x0b	; 11
- 114:	fc 01       	movw	r30, r24
- 116:	e0 50       	subi	r30, 0x00	; 0
- 118:	ff 4f       	sbci	r31, 0xFF	; 255
- 11a:	21 e0       	ldi	r18, 0x01	; 1
- 11c:	30 e0       	ldi	r19, 0x00	; 0
- 11e:	c9 01       	movw	r24, r18
- 120:	00 80       	ld	r0, Z
- 122:	02 c0       	rjmp	.+4      	; 0x128 <Cycle_lights+0x36>
- 124:	88 0f       	add	r24, r24
- 126:	99 1f       	adc	r25, r25
- 128:	0a 94       	dec	r0
- 12a:	e2 f7       	brpl	.-8      	; 0x124 <Cycle_lights+0x32>
- 12c:	84 2b       	or	r24, r20
- 12e:	8b b9       	out	0x0b, r24	; 11
- 130:	22 c0       	rjmp	.+68     	; 0x176 <Cycle_lights+0x84>
-	}
-	else if(Flashreg < 8)
- 132:	88 30       	cpi	r24, 0x08	; 8
- 134:	91 05       	cpc	r25, r1
- 136:	84 f4       	brge	.+32     	; 0x158 <Cycle_lights+0x66>
-	{
-		//PORTC = Ledtab[Flashreg];
-		PORTC |= (1<< Ledtab[Flashreg]);
- 138:	48 b1       	in	r20, 0x08	; 8
- 13a:	fc 01       	movw	r30, r24
- 13c:	e0 50       	subi	r30, 0x00	; 0
- 13e:	ff 4f       	sbci	r31, 0xFF	; 255
- 140:	21 e0       	ldi	r18, 0x01	; 1
- 142:	30 e0       	ldi	r19, 0x00	; 0
- 144:	c9 01       	movw	r24, r18
- 146:	00 80       	ld	r0, Z
- 148:	02 c0       	rjmp	.+4      	; 0x14e <Cycle_lights+0x5c>
- 14a:	88 0f       	add	r24, r24
- 14c:	99 1f       	adc	r25, r25
- 14e:	0a 94       	dec	r0
- 150:	e2 f7       	brpl	.-8      	; 0x14a <Cycle_lights+0x58>
- 152:	84 2b       	or	r24, r20
- 154:	88 b9       	out	0x08, r24	; 8
- 156:	0f c0       	rjmp	.+30     	; 0x176 <Cycle_lights+0x84>
-	}
-	else
-	{
-		//PORTD = Ledtab[Flashreg];
-		PORTB |= (1<< Ledtab[Flashreg]);
- 158:	45 b1       	in	r20, 0x05	; 5
- 15a:	fc 01       	movw	r30, r24
- 15c:	e0 50       	subi	r30, 0x00	; 0
- 15e:	ff 4f       	sbci	r31, 0xFF	; 255
- 160:	21 e0       	ldi	r18, 0x01	; 1
- 162:	30 e0       	ldi	r19, 0x00	; 0
- 164:	c9 01       	movw	r24, r18
- 166:	00 80       	ld	r0, Z
- 168:	02 c0       	rjmp	.+4      	; 0x16e <Cycle_lights+0x7c>
- 16a:	88 0f       	add	r24, r24
- 16c:	99 1f       	adc	r25, r25
- 16e:	0a 94       	dec	r0
- 170:	e2 f7       	brpl	.-8      	; 0x16a <Cycle_lights+0x78>
- 172:	84 2b       	or	r24, r20
- 174:	85 b9       	out	0x05, r24	; 5
-	}
+ 174:	88 b1       	in	r24, 0x08	; 8
+ 176:	18 b8       	out	0x08, r1	; 8
+	
+	FlashPort();
+ 178:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
 	
 	Flashreg = (Flashreg +1) & 15;
- 176:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
- 17a:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
- 17e:	01 96       	adiw	r24, 0x01	; 1
- 180:	8f 70       	andi	r24, 0x0F	; 15
- 182:	99 27       	eor	r25, r25
- 184:	90 93 11 01 	sts	0x0111, r25	; 0x800111 <__data_end+0x1>
- 188:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <__data_end>
+ 17c:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
+ 180:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
+ 184:	01 96       	adiw	r24, 0x01	; 1
+ 186:	8f 70       	andi	r24, 0x0F	; 15
+ 188:	99 27       	eor	r25, r25
+ 18a:	90 93 11 01 	sts	0x0111, r25	; 0x800111 <__data_end+0x1>
+ 18e:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <__data_end>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 18c:	2f ef       	ldi	r18, 0xFF	; 255
- 18e:	80 e7       	ldi	r24, 0x70	; 112
- 190:	92 e0       	ldi	r25, 0x02	; 2
- 192:	21 50       	subi	r18, 0x01	; 1
- 194:	80 40       	sbci	r24, 0x00	; 0
- 196:	90 40       	sbci	r25, 0x00	; 0
- 198:	e1 f7       	brne	.-8      	; 0x192 <Cycle_lights+0xa0>
- 19a:	00 c0       	rjmp	.+0      	; 0x19c <Cycle_lights+0xaa>
- 19c:	00 00       	nop
- 19e:	08 95       	ret
+ 192:	2f ef       	ldi	r18, 0xFF	; 255
+ 194:	81 ee       	ldi	r24, 0xE1	; 225
+ 196:	94 e0       	ldi	r25, 0x04	; 4
+ 198:	21 50       	subi	r18, 0x01	; 1
+ 19a:	80 40       	sbci	r24, 0x00	; 0
+ 19c:	90 40       	sbci	r25, 0x00	; 0
+ 19e:	e1 f7       	brne	.-8      	; 0x198 <Cycle_lights+0x2c>
+ 1a0:	00 c0       	rjmp	.+0      	; 0x1a2 <Cycle_lights+0x36>
+ 1a2:	00 00       	nop
+ 1a4:	08 95       	ret
 
-000001a0 <main>:
+000001a6 <Cycle_lights_Rev>:
+	
+}
+
+void Cycle_lights_Rev()
+{
+	PORTD &= 0x0; //turn off all led
+ 1a6:	8b b1       	in	r24, 0x0b	; 11
+ 1a8:	1b b8       	out	0x0b, r1	; 11
+	PORTB &= 0x0;
+ 1aa:	85 b1       	in	r24, 0x05	; 5
+ 1ac:	15 b8       	out	0x05, r1	; 5
+	PORTC &= 0x0;
+ 1ae:	88 b1       	in	r24, 0x08	; 8
+ 1b0:	18 b8       	out	0x08, r1	; 8
+	
+	FlashPort();
+ 1b2:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
+	
+	Flashreg --;
+ 1b6:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
+ 1ba:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
+ 1be:	01 97       	sbiw	r24, 0x01	; 1
+	
+	if (Flashreg < 0)
+ 1c0:	2a f0       	brmi	.+10     	; 0x1cc <Cycle_lights_Rev+0x26>
+	PORTB &= 0x0;
+	PORTC &= 0x0;
+	
+	FlashPort();
+	
+	Flashreg --;
+ 1c2:	90 93 11 01 	sts	0x0111, r25	; 0x800111 <__data_end+0x1>
+ 1c6:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <__data_end>
+ 1ca:	06 c0       	rjmp	.+12     	; 0x1d8 <Cycle_lights_Rev+0x32>
+	
+	if (Flashreg < 0)
+	{
+		Flashreg = 15;
+ 1cc:	8f e0       	ldi	r24, 0x0F	; 15
+ 1ce:	90 e0       	ldi	r25, 0x00	; 0
+ 1d0:	90 93 11 01 	sts	0x0111, r25	; 0x800111 <__data_end+0x1>
+ 1d4:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <__data_end>
+ 1d8:	2f ef       	ldi	r18, 0xFF	; 255
+ 1da:	81 ee       	ldi	r24, 0xE1	; 225
+ 1dc:	94 e0       	ldi	r25, 0x04	; 4
+ 1de:	21 50       	subi	r18, 0x01	; 1
+ 1e0:	80 40       	sbci	r24, 0x00	; 0
+ 1e2:	90 40       	sbci	r25, 0x00	; 0
+ 1e4:	e1 f7       	brne	.-8      	; 0x1de <Cycle_lights_Rev+0x38>
+ 1e6:	00 c0       	rjmp	.+0      	; 0x1e8 <Cycle_lights_Rev+0x42>
+ 1e8:	00 00       	nop
+ 1ea:	08 95       	ret
+
+000001ec <All_On>:
+	_delay_ms(100);
+	
+}
+
+void All_On (int Flashtime)
+{
+ 1ec:	ac 01       	movw	r20, r24
+	int Count = 0;
+	while (Count < Flashtime)
+ 1ee:	18 16       	cp	r1, r24
+ 1f0:	19 06       	cpc	r1, r25
+ 1f2:	4c f5       	brge	.+82     	; 0x246 <All_On+0x5a>
+ 1f4:	20 e0       	ldi	r18, 0x00	; 0
+ 1f6:	30 e0       	ldi	r19, 0x00	; 0
+	{
+		PORTB &= 0x0; 
+ 1f8:	85 b1       	in	r24, 0x05	; 5
+ 1fa:	15 b8       	out	0x05, r1	; 5
+		PORTD &= 0x08; //all off but PD3 the target led
+ 1fc:	9b b1       	in	r25, 0x0b	; 11
+ 1fe:	98 70       	andi	r25, 0x08	; 8
+ 200:	9b b9       	out	0x0b, r25	; 11
+		PORTC &= 0x0;
+ 202:	88 b1       	in	r24, 0x08	; 8
+ 204:	18 b8       	out	0x08, r1	; 8
+ 206:	6f ef       	ldi	r22, 0xFF	; 255
+ 208:	81 ee       	ldi	r24, 0xE1	; 225
+ 20a:	94 e0       	ldi	r25, 0x04	; 4
+ 20c:	61 50       	subi	r22, 0x01	; 1
+ 20e:	80 40       	sbci	r24, 0x00	; 0
+ 210:	90 40       	sbci	r25, 0x00	; 0
+ 212:	e1 f7       	brne	.-8      	; 0x20c <All_On+0x20>
+ 214:	00 c0       	rjmp	.+0      	; 0x216 <All_On+0x2a>
+ 216:	00 00       	nop
+		_delay_ms(100);
+		
+		PORTB |= 0x1F; //all on
+ 218:	95 b1       	in	r25, 0x05	; 5
+ 21a:	9f 61       	ori	r25, 0x1F	; 31
+ 21c:	95 b9       	out	0x05, r25	; 5
+		PORTD |= 0xEF;
+ 21e:	9b b1       	in	r25, 0x0b	; 11
+ 220:	9f 6e       	ori	r25, 0xEF	; 239
+ 222:	9b b9       	out	0x0b, r25	; 11
+		PORTC |= 0x3C;
+ 224:	98 b1       	in	r25, 0x08	; 8
+ 226:	9c 63       	ori	r25, 0x3C	; 60
+ 228:	98 b9       	out	0x08, r25	; 8
+ 22a:	6f ef       	ldi	r22, 0xFF	; 255
+ 22c:	81 ee       	ldi	r24, 0xE1	; 225
+ 22e:	94 e0       	ldi	r25, 0x04	; 4
+ 230:	61 50       	subi	r22, 0x01	; 1
+ 232:	80 40       	sbci	r24, 0x00	; 0
+ 234:	90 40       	sbci	r25, 0x00	; 0
+ 236:	e1 f7       	brne	.-8      	; 0x230 <All_On+0x44>
+ 238:	00 c0       	rjmp	.+0      	; 0x23a <All_On+0x4e>
+ 23a:	00 00       	nop
+		_delay_ms(100);
+		
+		Count++;
+ 23c:	2f 5f       	subi	r18, 0xFF	; 255
+ 23e:	3f 4f       	sbci	r19, 0xFF	; 255
+}
+
+void All_On (int Flashtime)
+{
+	int Count = 0;
+	while (Count < Flashtime)
+ 240:	42 17       	cp	r20, r18
+ 242:	53 07       	cpc	r21, r19
+ 244:	c9 f6       	brne	.-78     	; 0x1f8 <All_On+0xc>
+ 246:	08 95       	ret
+
+00000248 <main>:
 int Flashreg = 0;
-int Currentport = 1;
+int Num = 15;
 
 int main(void)
 {
 	DDRD &= 0xFF;
- 1a0:	8a b1       	in	r24, 0x0a	; 10
- 1a2:	8a b9       	out	0x0a, r24	; 10
+ 248:	8a b1       	in	r24, 0x0a	; 10
+ 24a:	8a b9       	out	0x0a, r24	; 10
 	DDRB &= 0xFF;
- 1a4:	84 b1       	in	r24, 0x04	; 4
- 1a6:	84 b9       	out	0x04, r24	; 4
+ 24c:	84 b1       	in	r24, 0x04	; 4
+ 24e:	84 b9       	out	0x04, r24	; 4
 	DDRC &= 0xFF;
- 1a8:	87 b1       	in	r24, 0x07	; 7
- 1aa:	87 b9       	out	0x07, r24	; 7
+ 250:	87 b1       	in	r24, 0x07	; 7
+ 252:	87 b9       	out	0x07, r24	; 7
 	
 	
 	PORTB &= 0;
- 1ac:	85 b1       	in	r24, 0x05	; 5
- 1ae:	15 b8       	out	0x05, r1	; 5
+ 254:	85 b1       	in	r24, 0x05	; 5
+ 256:	15 b8       	out	0x05, r1	; 5
 	PORTD &= 0; //Turn off leds
- 1b0:	8b b1       	in	r24, 0x0b	; 11
- 1b2:	1b b8       	out	0x0b, r1	; 11
-	//All_On();
+ 258:	8b b1       	in	r24, 0x0b	; 11
+ 25a:	1b b8       	out	0x0b, r1	; 11
 	
+	All_On(10);
+ 25c:	8a e0       	ldi	r24, 0x0A	; 10
+ 25e:	90 e0       	ldi	r25, 0x00	; 0
+ 260:	0e 94 f6 00 	call	0x1ec	; 0x1ec <All_On>
+	int temp = 0;
+ 264:	c0 e0       	ldi	r28, 0x00	; 0
+ 266:	d0 e0       	ldi	r29, 0x00	; 0
+ 268:	03 c0       	rjmp	.+6      	; 0x270 <main+0x28>
+    while (1) 
+    {
+		
+		while(temp < 16)
+		{
+			Cycle_lights();	
+ 26a:	0e 94 b6 00 	call	0x16c	; 0x16c <Cycle_lights>
+			temp++;
+ 26e:	21 96       	adiw	r28, 0x01	; 1
+	int temp = 0;
     /* Replace with your application code */
     while (1) 
     {
-		Cycle_lights();
- 1b4:	0e 94 79 00 	call	0xf2	; 0xf2 <Cycle_lights>
- 1b8:	fd cf       	rjmp	.-6      	; 0x1b4 <main+0x14>
+		
+		while(temp < 16)
+ 270:	c0 31       	cpi	r28, 0x10	; 16
+ 272:	d1 05       	cpc	r29, r1
+ 274:	d4 f3       	brlt	.-12     	; 0x26a <main+0x22>
+ 276:	c0 e1       	ldi	r28, 0x10	; 16
+ 278:	d0 e0       	ldi	r29, 0x00	; 0
+		
+		temp = 0;
+		
+		while(temp < 16)
+		{
+			Cycle_lights_Rev();
+ 27a:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <Cycle_lights_Rev>
+ 27e:	21 97       	sbiw	r28, 0x01	; 1
+			temp++;
+		}
+		
+		temp = 0;
+		
+		while(temp < 16)
+ 280:	e1 f7       	brne	.-8      	; 0x27a <main+0x32>
+			Cycle_lights_Rev();
+			temp++;
+		}
+		temp = 0;
+		
+		All_On(10);
+ 282:	8a e0       	ldi	r24, 0x0A	; 10
+ 284:	90 e0       	ldi	r25, 0x00	; 0
+ 286:	0e 94 f6 00 	call	0x1ec	; 0x1ec <All_On>
+		while(temp < 16)
+		{
+			Cycle_lights_Rev();
+			temp++;
+		}
+		temp = 0;
+ 28a:	c0 e0       	ldi	r28, 0x00	; 0
+ 28c:	d0 e0       	ldi	r29, 0x00	; 0
+		
+		All_On(10);
+    }
+ 28e:	f0 cf       	rjmp	.-32     	; 0x270 <main+0x28>
 
-000001ba <_exit>:
- 1ba:	f8 94       	cli
+00000290 <_exit>:
+ 290:	f8 94       	cli
 
-000001bc <__stop_program>:
- 1bc:	ff cf       	rjmp	.-2      	; 0x1bc <__stop_program>
+00000292 <__stop_program>:
+ 292:	ff cf       	rjmp	.-2      	; 0x292 <__stop_program>

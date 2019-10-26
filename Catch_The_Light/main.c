@@ -6,8 +6,10 @@
  */ 
 
 void Cycle_lights();
-void All_On();
+void All_On(int Flashtime);
+void FlashPort();
 void Cycle_lights_Rev();
+void Random_Light();
 
 #include <avr/io.h>
 #define F_CPU 16000000UL
@@ -18,7 +20,7 @@ void Cycle_lights_Rev();
 uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 
 int Flashreg = 0;
-int Currentport = 1;
+int Num = 15;
 
 int main(void)
 {
@@ -30,13 +32,45 @@ int main(void)
 	PORTB &= 0;
 	PORTD &= 0; //Turn off leds
 	
-	//All_On();
-	
+	All_On(10);
+	int temp = 0;
     /* Replace with your application code */
     while (1) 
     {
-		Cycle_lights();
+		
+		while(temp < 16)
+		{
+			Cycle_lights();	
+			temp++;
+		}
+		
+		temp = 0;
+		
+		while(temp < 16)
+		{
+			Cycle_lights_Rev();
+			temp++;
+		}
+		temp = 0;
+		
+		All_On(10);
     }
+}
+
+void FlashPort()
+{
+	if(Flashreg < 4 || Flashreg > 12)
+	{
+		PORTD |= (1<< Ledtab[Flashreg]);
+	}
+	else if(Flashreg < 8)
+	{
+		PORTC |= (1<< Ledtab[Flashreg]);
+	}
+	else
+	{
+		PORTB |= (1<< Ledtab[Flashreg]);
+	}
 }
 
 void Cycle_lights()
@@ -44,82 +78,56 @@ void Cycle_lights()
 	PORTD &= 0x0; //turn off all led
 	PORTB &= 0x0;
 	PORTC &= 0x0;
-	//int Pin = Ledtab[Flashreg];
-	if(Flashreg < 4 || Flashreg > 12)
-	{
-		//PORTD = Ledtab[Flashreg];
-		PORTD |= (1<< Ledtab[Flashreg]);
-	}
-	else if(Flashreg < 8)
-	{
-		//PORTC = Ledtab[Flashreg];
-		PORTC |= (1<< Ledtab[Flashreg]);
-	}
-	else
-	{
-		//PORTD = Ledtab[Flashreg];
-		PORTB |= (1<< Ledtab[Flashreg]);
-	}
+	
+	FlashPort();
 	
 	Flashreg = (Flashreg +1) & 15;
 	
-	_delay_ms(50);
+	_delay_ms(100);
 	
-	/*
-	if(Currentport)
-	{
-		PORTD |= (1<< Flashreg);
-	}
-	else
-	{
-		PORTB |= (1<< Flashreg);
-	}
-	
-	Flashreg = (Flashreg+1) & 7; //once Flashreg rolls over to 8, rest to 0
-	if (Flashreg == 0) //when Flashreg is 0 again, Next port of leds is to be flashed
-	{
-		Currentport = Currentport^1; //toggle Currentport between 1 and 0
-	}	
-	_delay_ms(50);*/
 }
 
 void Cycle_lights_Rev()
 {
 	PORTD &= 0x0; //turn off all led
 	PORTB &= 0x0;
+	PORTC &= 0x0;
 	
-	if(Currentport)
+	FlashPort();
+	
+	Flashreg --;
+	
+	if (Flashreg < 0)
 	{
-		PORTB |= (1<< Flashreg);
-	}
-	else
-	{
-		PORTD |= (1<< Flashreg);
+		Flashreg = 15;
 	}
 	
-	Flashreg = Flashreg-1; //once Flashreg rolls over to 0, 
-	if (Flashreg == 0) //when Flashreg is 0 again, Next port of leds is to be flashed
-	{
-		Currentport = Currentport^1; //toggle Currentport between 1 and 0
-		Flashreg = 7; // reset
-	}
-	_delay_ms(50);
+	
+	_delay_ms(100);
+	
 }
 
-void All_On ()
+void All_On (int Flashtime)
 {
-	int Flashtime = 0;
-	while (Flashtime < 10)
+	int Count = 0;
+	while (Count < Flashtime)
 	{
-		PORTB &= 0x0; //all off but PB7 the target led
-		PORTD &= 0x0;
+		PORTB &= 0x0; 
+		PORTD &= 0x08; //all off but PD3 the target led
+		PORTC &= 0x0;
 		_delay_ms(100);
 		
-		PORTB |= 0xFF; //all on
-		PORTD |= 0xFF;
+		PORTB |= 0x1F; //all on
+		PORTD |= 0xEF;
+		PORTC |= 0x3C;
 		_delay_ms(100);
 		
-		Flashtime++;
+		Count++;
 	}
+	
+}
+
+void Random_Light()
+{
 	
 }
