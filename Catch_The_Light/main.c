@@ -37,10 +37,11 @@ int main(void)
 	
 	PORTB &= 0;
 	PORTD &= 0; //Turn off leds
+	PORTC &= 0;
 	
 	All_On(10);
 	int temp = 0;
-    /* Replace with your application code */
+
     while (1) 
     {
 		
