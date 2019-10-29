@@ -53,7 +53,7 @@ int main(void)
 		
 		temp = 0;
 		
-		while(temp < 16)
+		while(temp < 15)
 		{
 			Cycle_lights_Rev();
 			temp++;
