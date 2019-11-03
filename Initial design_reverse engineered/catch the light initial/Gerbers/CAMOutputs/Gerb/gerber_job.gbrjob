@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2019-10-31T17:17:19Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.5.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "catch the light initial"
+        },
+        "Owner": "Jay Votta <u_jvotta@umassd.edu>",
+        "Size": {
+            "X": 77.14,
+            "Y": 49.52
+        }
+    }
+}
