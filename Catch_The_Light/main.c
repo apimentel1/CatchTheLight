@@ -93,7 +93,7 @@ void Cycle_lights()
 	
 	Flashreg = (Flashreg +1) & 15; //Increment Flashreg until 15 then reset to 0
 	
-	_delay_ms(50); //delay 50ms
+	mydelay(5); //delay 50ms
 	
 }
 
@@ -113,7 +113,7 @@ void Cycle_lights_Rev()
 	}
 	
 	
-	mydelay(10); //delay 100ms
+	mydelay(5); //delay 100ms
 	
 }
 
