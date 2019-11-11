@@ -1,0 +1,65 @@
+Partlist
+
+Exported from Schematic.sch at 11/7/2019 1:47 PM
+
+EAGLE Version 9.5.1 Copyright (c) 1988-2019 Autodesk, Inc.
+
+Assembly variant: 
+
+Part     Value           Device          Package               Library         Sheet
+
+BATT                     BC-2003SMD      BC-2003               My-library_     1
+C1       100n            C-USC0805       C0805                 rcl             1
+C2       100n            C-USC0805       C0805                 rcl             1
+C3       100n            C-USC0805       C0805                 rcl             1
+C4       100n            C-USC0805       C0805                 rcl             1
+C5       100n            C-USC0805       C0805                 rcl             1
+C6       100n            C-USC0805       C0805                 rcl             1
+ISP1     AVRISP-6        AVRISP-6        AVRISP                adafruit        1
+LED1     Green           LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED2     Blue            LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED3     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED4     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED5                     LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED6     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED7     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED8     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED9     Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED10    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED11    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED12    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED13    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED14    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED15    Red             LEDCHIP-LED0805 CHIP-LED0805          led             1
+LED16    Blue            LEDCHIP-LED0805 CHIP-LED0805          led             1
+Q1                       CRYSTALHC49UP   HC49UP                crystal         1
+Q2       SI2323DS        SI2323DS        SOT23                 SI2323DS        1
+R1       1.5k            R-EU_R0805      R0805                 rcl             1
+R2       1.5k            R-EU_R0805      R0805                 rcl             1
+R3       1.5k            R-EU_R0805      R0805                 rcl             1
+R4       1.5k            R-EU_R0805      R0805                 rcl             1
+R5       1.5k            R-EU_R0805      R0805                 rcl             1
+R6       1.5k            R-EU_R0805      R0805                 rcl             1
+R7       1.5k            R-EU_R0805      R0805                 rcl             1
+R8       1.5k            R-EU_R0805      R0805                 rcl             1
+R9       1.5k            R-EU_R0805      R0805                 rcl             1
+R10      1.5k            R-EU_R0805      R0805                 rcl             1
+R11      1.5k            R-EU_R0805      R0805                 rcl             1
+R12      1.5k            R-EU_R0805      R0805                 rcl             1
+R13      1.5k            R-EU_R0805      R0805                 rcl             1
+R14      1.5k            R-EU_R0805      R0805                 rcl             1
+R15      1.5k            R-EU_R0805      R0805                 rcl             1
+R16      1.5k            R-EU_R0805      R0805                 rcl             1
+R17      10k             R-EU_R0805      R0805                 rcl             1
+R18      10k             R-EU_R0805      R0805                 rcl             1
+R19      0               R-EU_R0805      R0805                 rcl             1
+R20      0               R-EU_R0805      R0805                 rcl             1
+S2       DTSM-6          DTSM-6          DTSM-6                switch-tact     1
+TC1      TC2030-IDC-NL   TC2030-IDC-NL   TC2030-IDC-NL         TagConnect      1
+U$1      TEST_POINT      TEST_POINT      TEST_POINT            My-library_     1
+U$2      TEST_POINT      TEST_POINT      TEST_POINT            My-library_     1
+U$3      TEST_POINT      TEST_POINT      TEST_POINT            My-library_     1
+U$4      TEST_POINT      TEST_POINT      TEST_POINT            My-library_     1
+U$5      TEST_POINT      TEST_POINT      TEST_POINT            My-library_     1
+U$6      PINHEADER       PINHEADER       HEADERPIN             My-library_     1
+U1       ATMEGA328PB-AUR ATMEGA328PB-AUR QFP80P900X900X120-32N ATMEGA328PB-AUR 1
