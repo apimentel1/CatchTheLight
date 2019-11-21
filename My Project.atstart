@@ -1,0 +1,369 @@
+format_version: '2'
+name: My Project
+versions:
+  api: '1.0'
+  backend: 1.6.148
+  commit: 605f106ab95776472e3febf2fac2471441fb1816
+  content: 1.0.1635
+  content_pack_name: acme-packs-all
+  format: '2'
+  frontend: 1.6.1884
+board:
+  identifier: ATmega328PBXplainedMini
+  device: ATmega328PB-MU
+details: null
+application: null
+middlewares:
+  QTOUCH_LIBRARY_0:
+    user_label: QTOUCH_LIBRARY_0
+    configuration: {}
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Standard_Library
+    functionality: QTouch_Library
+    api: QTouch:General:Core
+    dependencies: {}
+  QTOUCH_TIMER:
+    user_label: QTOUCH_TIMER
+    configuration: {}
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Timer
+    functionality: QTouch_Timer
+    api: QTouch:Driver:Timer
+    dependencies:
+      Timer: Timer
+  QTOUCH_NODE:
+    user_label: QTOUCH_NODE
+    configuration:
+      order: 0
+      ptc_analog_gain: '1'
+      ptc_csd: 0
+      ptc_digital_gain: '1'
+      ptc_filter_level: '16'
+      ptc_prescaler: Divide by 2
+      ptc_rsel: No Resistor
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_selfcap_node
+    functionality: QTouch_Node
+    api: QTouch:General:Node
+    dependencies:
+      QTouch Acquisition: QTOUCH_ACQUISITION
+      Y-line: PTC:Y/07
+      PTC: PTC
+  QTOUCH_SENSOR:
+    user_label: QTOUCH_SENSOR
+    configuration:
+      anti_tch_drift_rate: 5
+      anti_tch_recal_thrshld: 100 percent of Touch threshold
+      anti_touch_count: 5
+      drift_hold_time: 20
+      max_on_duration: 0
+      reburst_mode: Reburst sensors only in process of calibration / filter in / filter
+        out and AKS groups
+      tch_drift_rate: 20
+      touch_det_int: 4
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Sensor
+    functionality: QTouch_Sensor
+    api: QTouch:General:Sensor
+    dependencies: {}
+  QTOUCH_BUTTON:
+    user_label: QTOUCH_BUTTON
+    configuration:
+      order: 0
+      radius: 30
+      touch_sensor_aks: No AKS setting
+      touch_sensor_hysterisis: 25 percent of Sensor Threshold
+      touch_sensor_threshold: 20
+      x_position: 50
+      y_position: 50
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Key
+    functionality: QTouch_Key
+    api: QTouch:General:Key
+    dependencies:
+      QTouch Sensor: QTOUCH_SENSOR
+      QTouch Node: QTOUCH_NODE
+  QTOUCH_BINDING:
+    user_label: QTOUCH_BINDING
+    configuration: {}
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Binding
+    functionality: QTouch_Binding
+    api: QTouch:General:Binding
+    dependencies: {}
+  QTOUCH_REMOVE_BINDING_0:
+    user_label: QTOUCH_REMOVE_BINDING_0
+    configuration: {}
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Remove_Binding
+    functionality: QTouch_Remove_Binding
+    api: QTouch:General:RemoveBinding
+    dependencies: {}
+  QTOUCH_DATASTREAMER_0:
+    user_label: QTOUCH_DATASTREAMER_0
+    configuration:
+      debug_board_type: USER_BOARD
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::Data_Streamer_UART_Interface
+    functionality: QTouch_DataStreamer
+    api: QTouch:General:Datastreamer
+    dependencies:
+      QTouch Usart: QTOUCH_USART
+  QTOUCH_USART:
+    user_label: QTOUCH_USART
+    configuration: {}
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Usart
+    functionality: QTouch_Usart
+    api: QTouch:Driver:USART
+    dependencies:
+      USART: USART
+  QTOUCH_ACQUISITION:
+    user_label: QTOUCH_ACQUISITION
+    configuration:
+      acquisition_frequency: FREQ_SEL_0
+      ptc_acq_tune: Manual user setting of Prescaler, Charge share delay & Series
+        resistor
+      ptc_measurement_time: 20
+      ptc_sensor_type: Selfcap
+    definition: Atmel:QTOUCH_MEGA_AVR:1.0.0::QTouch_Acquisition_-_Manual_Tuning
+    functionality: QTouch_Acquisition
+    api: QTouch:General:Acquisition
+    dependencies:
+      QTouch Timer: QTOUCH_TIMER
+      QTouch Binding: QTOUCH_BINDING
+drivers:
+  CPU:
+    user_label: CPU
+    definition: 'Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::CPU::driver_config_definition::SYSCTRL::Drivers:SYSCTRL:'
+    functionality: System
+    api: 'Drivers:SYSCTRL:'
+    configuration:
+      async_input_speed: 32768
+      clkadc_oscillator: Input clock
+      clkasy_oscillator: Async input clock
+      clkcpu_oscillator: Input clock
+      clkio_oscillator: Input clock
+      clkptc_oscillator: Input clock
+      cpu_clock_source: CLKcpu
+      cpu_sreg_i: true
+      enable_async_input: true
+      enable_clkadc: true
+      enable_clkasy: true
+      enable_clkcpu: true
+      enable_clkio: true
+      enable_clkptc: true
+      enable_core_clock: true
+      enable_input: true
+      input_speed: 8000000
+      pm_ivsel: Interrupt vector placed at the beginning of main FLASH memory
+      pm_pud: false
+      pm_se: false
+      pm_sm: Idle
+      prescaler_divider: '1'
+    optional_signals: []
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: Core
+          input: Core
+          external: false
+          external_frequency: 0
+        configuration: {}
+  PTC:
+    user_label: PTC
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::PTC::driver_config_definition::PTC::Drivers:PTC:Init
+    functionality: PTC
+    api: Drivers:PTC:Init
+    configuration: {}
+    optional_signals:
+    - identifier: PTC:Y/07
+      pad: PE3
+      mode: Enabled
+      configuration: null
+      definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::optional_signal_definition::PTC.Y.07
+      name: PTC/Y/07
+      label: Y/07
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: PTC
+          input: CLKptc
+          external: false
+          external_frequency: 0
+        configuration:
+          ptc_clock_source: CLKptc
+  Timer:
+    user_label: Timer
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::TC0::driver_config_definition::TC8.Mode.2.CTC::Drivers:TC8:Init
+    functionality: Timer
+    api: Drivers:TC8:Init
+    configuration:
+      inc_isr_harness: true
+      tc8_coma: Normal port operation, OCA disconnected
+      tc8_comb: Normal port operation, OCB disconnected
+      tc8_cs: IO clock divided by 1024
+      tc8_ociea: true
+      tc8_ocieb: false
+      tc8_orca: 0
+      tc8_orcb: 0
+      tc8_psrasy: false
+      tc8_psrsync: false
+      tc8_toie: false
+      tc8_tsm: false
+    optional_signals: []
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: TC8
+          input: CLKio
+          external: false
+          external_frequency: 0
+        configuration:
+          tc8_clock_source: CLKio
+  USART:
+    user_label: USART
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::USART0::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
+    functionality: USART
+    api: Drivers:USART:Basic
+    configuration:
+      printf_support: false
+      usart_baud_rate: 38400
+      usart_mpcm: false
+      usart_rxcie: false
+      usart_rxen: false
+      usart_rxsie: false
+      usart_sfde: false
+      usart_txcie: false
+      usart_txen: true
+      usart_ucpha: Sample data on the first edge of XCK
+      usart_ucpol: false
+      usart_ucsz: 8-bit
+      usart_udord: MSB is transmitted first
+      usart_udrie: false
+      usart_upm: Disabled
+      usart_usbs: 1-bit
+    optional_signals: []
+    variant:
+      specification: UMSEL=0
+      required_signals:
+      - name: USART0/RXD
+        pad: PD0
+        label: RXD
+      - name: USART0/TXD
+        pad: PD1
+        label: TXD
+    clocks:
+      domain_group:
+        nodes:
+        - name: USART
+          input: CLKio
+          external: false
+          external_frequency: 0
+        configuration:
+          usart_clock_source: CLKio
+pads:
+  Led1:
+    name: PD3
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD3
+    mode: Digital output
+    user_label: Led1
+    configuration: null
+  Led16:
+    name: PD5
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD5
+    mode: Digital output
+    user_label: Led16
+    configuration: null
+  Led15:
+    name: PD6
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD6
+    mode: Digital output
+    user_label: Led15
+    configuration: null
+  Ld14:
+    name: PD7
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD7
+    mode: Digital output
+    user_label: Ld14
+    configuration: null
+  Led13:
+    name: PB0
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PB0
+    mode: Digital output
+    user_label: Led13
+    configuration: null
+  Led12:
+    name: PB1
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PB1
+    mode: Digital output
+    user_label: Led12
+    configuration: null
+  Led11:
+    name: PB2
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PB2
+    mode: Digital output
+    user_label: Led11
+    configuration: null
+  Led10:
+    name: PB3
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PB3
+    mode: Digital output
+    user_label: Led10
+    configuration: null
+  Led9:
+    name: PB4
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PB4
+    mode: Digital output
+    user_label: Led9
+    configuration: null
+  Qtouch:
+    name: PE3
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PE3
+    mode: Analog
+    user_label: Qtouch
+    configuration: null
+  Led8:
+    name: PC2
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PC2
+    mode: Digital output
+    user_label: Led8
+    configuration: null
+  Led7:
+    name: PC3
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PC3
+    mode: Digital output
+    user_label: Led7
+    configuration: null
+  Led6:
+    name: PC4
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PC4
+    mode: Digital output
+    user_label: Led6
+    configuration: null
+  Led5:
+    name: PC5
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PC5
+    mode: Digital output
+    user_label: Led5
+    configuration: null
+  Led4:
+    name: PD0
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD0
+    mode: Digital output
+    user_label: Led4
+    configuration: null
+  Led3:
+    name: PD1
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD1
+    mode: Digital output
+    user_label: Led3
+    configuration: null
+  Led2:
+    name: PD2
+    definition: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::pad::PD2
+    mode: Digital output
+    user_label: Led2
+    configuration: null
+toolchain_options:
+- definition:
+    identifier: Atmel:ATMega328PB_drivers:1.0.0::ATmega328PB-MU::environment_definition::All:Atmel.Studio:7.0.0
+  configuration:
+    compiler_config:
+      avrgcc_compiler_miscellaneous_OtherFlags: -std=gnu99
+    linker_config:
+      avrgcc_linker_miscellaneous_LinkerFlags: ''

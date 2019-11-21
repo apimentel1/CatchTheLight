@@ -35,9 +35,9 @@ int main(void)
 	DDRC &= 0xFF;
 	
 	
-	PORTB &= 0;
-	PORTD &= 0; //Turn off leds
-	PORTC &= 0;
+	PORTB &= 0x0;
+	PORTD &= 0x0; //Turn off leds
+	PORTC &= 0x0;
 	
 	All_On(10);
 	int temp = 0;
@@ -45,7 +45,7 @@ int main(void)
     while (1) 
     {
 		
-		while(temp < 16)
+		while(temp < 50)
 		{
 			Cycle_lights();	
 			temp++;
@@ -53,7 +53,7 @@ int main(void)
 		
 		temp = 0;
 		
-		while(temp < 15)
+		while(temp < 50)
 		{
 			Cycle_lights_Rev();
 			temp++;
@@ -93,7 +93,7 @@ void Cycle_lights()
 	
 	Flashreg = (Flashreg +1) & 15; //Increment Flashreg until 15 then reset to 0
 	
-	mydelay(5); //delay 50ms
+	mydelay(10); //delay 50ms
 	
 }
 
@@ -113,7 +113,7 @@ void Cycle_lights_Rev()
 	}
 	
 	
-	mydelay(5); //delay 100ms
+	mydelay(10); //delay 100ms
 	
 }
 
