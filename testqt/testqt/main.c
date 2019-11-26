@@ -1,10 +1,3 @@
-/*
- * Catch_The_Light.c
- *
- * Created: 10/18/2019 9:08:03 PM
- * Author : pimen
- */ 
-
 void Cycle_lights();
 void All_On(int Flashtime);
 void FlashPort();
@@ -12,13 +5,15 @@ void Cycle_lights_Rev();
 void Random_Light();
 void mydelay(int Delay_Time);
 
-#include <avr/io.h>
-#define F_CPU 16000000UL
+
+#include <atmel_start.h>
+#include "touch.h"
+//#define F_CPU 16000000UL
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 //uint16_t Ledtab [] = {0x08, 0x04, 0x02, 0x01, 0x20, 0x16, 0x08, 0x04, 0x16, 0x08, 0x04, 0x02, 0x01, 0x80, 0x40, 0x20};
-//PORTD has Leds 1-4, 14-16
+//has Leds 1-4, 14-16
 //PORTB has Leds 9-13
 //PORTC has Leds 5-8
 //-------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
@@ -28,41 +23,73 @@ uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 int Flashreg = 0;
 int Num = 15;
 
+
+
 int main(void)
 {
+	uint8_t key_status1 = 0;
+	
+	/* Initializes MCU, drivers and middleware */
+	atmel_start_init();
+	
+	//DDRB |= (1<<5);
 	DDRD &= 0xFF;
 	DDRB &= 0xFF;
 	DDRC &= 0xFF;
-	
-	
+		
+		
 	PORTB &= 0x0;
 	PORTD &= 0x0; //Turn off leds
 	PORTC &= 0x0;
+	cpu_irq_enable();
 	
-	All_On(10);
-	int temp = 0;
+	//touch_init();
+	//int temp = 1;
+	
+	Cycle_lights();
 
-    while (1) 
-    {
+	/* Replace with your application code */
+	while (1)
+	{
+		//Run_Light(1)
 		
-		while(temp < 50)
+		touch_process();
+
+		key_status1 = get_sensor_state(0) & 0x80;
+
+		if ((0u != key_status1) /*&& temp*/)
 		{
-			Cycle_lights();	
-			temp++;
+			//Cycle_lights();
+			PORTB |=(1<<5);
+			//temp = 0;	
+		}
+		else 
+		{
+			PORTB &=~(1<<5);	
 		}
 		
-		temp = 0;
-		
-		while(temp < 50)
+	}
+}
+
+/*
+void Run_Light(int true)
+{
+	if(true)
+	{
+		while(1)
+		{
+			Cycle_lights();
+		}
+	}
+	else
+	{
+		while(1)
 		{
 			Cycle_lights_Rev();
-			temp++;
 		}
-		temp = 0;
-		
-		All_On(10);
-    }
-}
+	}
+	
+}*/
 
 void FlashPort()
 {
@@ -94,7 +121,6 @@ void Cycle_lights()
 	Flashreg = (Flashreg +1) & 15; //Increment Flashreg until 15 then reset to 0
 	
 	mydelay(10); //delay 50ms
-	
 }
 
 void Cycle_lights_Rev()
