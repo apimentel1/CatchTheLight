@@ -44,7 +44,7 @@ int main(void)
 
     while (1) 
     {
-		
+		/*
 		while(temp < 50)
 		{
 			Cycle_lights();	
@@ -60,7 +60,11 @@ int main(void)
 		}
 		temp = 0;
 		
-		All_On(10);
+		All_On(10);*/
+		PORTB &= 0x0;
+		PORTD &= 0x0; //Turn off leds
+		PORTC &= 0x0;
+		PORTD |= (1<<0);
     }
 }
 
