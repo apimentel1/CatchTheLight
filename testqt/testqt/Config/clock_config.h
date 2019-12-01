@@ -4,9 +4,11 @@
 
 // <<< Use Configuration Wizard in Context Menu >>>
 
+
 #ifndef F_CPU
-#define F_CPU 8000000
+#define F_CPU 16000000UL
 #endif
+
 // <h> PTC Clock Settings
 // <y> PTC Clock source
 // <CLKptc"> CLKptc

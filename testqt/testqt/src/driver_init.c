@@ -74,9 +74,9 @@ void USART_initialization(void)
  */
 void system_init()
 {
-	mcu_init();
+	//mcu_init();
 
-	sysctrl_init();
+	//sysctrl_init();
 
 	Timer_initialization();
 

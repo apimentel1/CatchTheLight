@@ -8,7 +8,6 @@ void mydelay(int Delay_Time);
 
 #include <atmel_start.h>
 #include "touch.h"
-//#define F_CPU 16000000UL
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
@@ -22,6 +21,7 @@ uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 
 int Flashreg = 0;
 int Num = 15;
+int Direction = 1;
 
 
 
@@ -30,23 +30,24 @@ int main(void)
 	uint8_t key_status1 = 0;
 	
 	/* Initializes MCU, drivers and middleware */
+	//DDRB |= (1<<5);
+	DDRD = 0xFF;
+	DDRB = 0xFF;
+	DDRC = 0xFF;
+		
+		
+	PORTB |= 0x0;
+	PORTD |= 0x0; //Turn off leds
+	PORTC |= 0x0;
+	
 	atmel_start_init();
 	
-	//DDRB |= (1<<5);
-	DDRD &= 0xFF;
-	DDRB &= 0xFF;
-	DDRC &= 0xFF;
-		
-		
-	PORTB &= 0x0;
-	PORTD &= 0x0; //Turn off leds
-	PORTC &= 0x0;
 	cpu_irq_enable();
 	
 	//touch_init();
 	//int temp = 1;
 	
-	Cycle_lights();
+	//Cycle_lights();
 
 	/* Replace with your application code */
 	while (1)
@@ -71,25 +72,18 @@ int main(void)
 	}
 }
 
-/*
-void Run_Light(int true)
+void Run_Light()
 {
-	if(true)
+	if(Direction)
 	{
-		while(1)
-		{
-			Cycle_lights();
-		}
+		Cycle_lights();
 	}
 	else
 	{
-		while(1)
-		{
-			Cycle_lights_Rev();
-		}
+		Cycle_lights_Rev();
 	}
 	
-}*/
+}
 
 void FlashPort()
 {
@@ -169,10 +163,5 @@ void mydelay(int Delay_Time)
 	{
 		_delay_ms(10);
 	}
-	
-}
-
-void Random_Light()
-{
 	
 }
