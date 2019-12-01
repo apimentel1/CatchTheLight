@@ -9,7 +9,6 @@ void Cycle_lights();
 void All_On(int Flashtime);
 void FlashPort(int Led);
 void Cycle_lights_Rev();
-void Random_Light();
 void mydelay(int Delay_Time);
 void Light_Direction();
 
@@ -30,57 +29,31 @@ int Flashreg = 0;
 int Num = 15;
 #define button 7
 int Direction = 1;
+int Delay_Time = 10;
+int Win_time = 0;
 
 int main(void)
 {
-	DDRD = (1<<Ledtab[0])|(1<<Ledtab[1])|(1<<Ledtab[2])|(1<<Ledtab[3])|(1<<Ledtab[13])|(1<<Ledtab[14])|(1<<Ledtab[15]);
-	DDRB = (1<<Ledtab[8])|(1<<Ledtab[9])|(1<<Ledtab[10])|(1<<Ledtab[11])|(1<<Ledtab[12]);
-	DDRC = (1<<Ledtab[4])|(1<<Ledtab[5])|(1<<Ledtab[6])|(1<<Ledtab[7]);
-	/*
-	DDRD &= 0xFF;
-	DDRB &= 0x7F;
-	DDRC &= 0xFF;
-	*/
+	DDRD |= 0xFF;
+	DDRB |= 0x7F;
+	DDRC |= 0xFF;
+	
 	
 	PORTB |= (1<<button); //enable pull-up resistor for PB7
 	
-	PORTB |= ~(1<<Ledtab[0])|~(1<<Ledtab[1])|~(1<<Ledtab[2])|~(1<<Ledtab[3])|~(1<<Ledtab[13])|~(1<<Ledtab[14])|~(1<<Ledtab[15]);
-	PORTD |= ~(1<<Ledtab[8])|~(1<<Ledtab[9])|~(1<<Ledtab[10])|~(1<<Ledtab[11])|~(1<<Ledtab[12]);
-	PORTC |= ~(1<<Ledtab[4])|~(1<<Ledtab[5])|~(1<<Ledtab[6])|~(1<<Ledtab[7]);
-	/*
-	PORTD &= 0x0; //Turn off leds
-	PORTB &= ~(0x7F);
-	PORTC &= 0x0;*/
+	PORTD |= 0x0; //Turn off leds
+	PORTB |= ~(0x7F);
+	PORTC |= 0x0;
 	
 	PCICR |= (1 << PCIE0);
 	PCMSK0 |= (1 << PCINT7);
 	sei();
 	
-	//All_On(10);
-	//int temp = 0;
+	All_On(5);
 
     while (1) 
     {
-		//FlashPort(1);
 		Light_Direction();
-		/*
-		while(temp < 50)
-		{
-			Cycle_lights();	
-			temp++;
-		}
-		
-		temp = 0;
-		
-		while(temp < 50)
-		{
-			Cycle_lights_Rev();
-			temp++;
-		}
-		temp = 0;
-		
-		All_On(10);
-		*/
     }
 }
 
@@ -123,9 +96,9 @@ void Cycle_lights()
 	
 	FlashPort(Flashreg); //Flash the light
 	
-	Flashreg = (Flashreg +1) & 15; //Increment Flashreg until 15 then reset to 0
+	Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
 	
-	mydelay(10); //delay 50ms
+	mydelay(Delay_Time); //delay 50ms
 	
 }
 
@@ -137,7 +110,7 @@ void Cycle_lights_Rev()
 	
 	FlashPort(Flashreg); //Flash the led
 	
-	Flashreg --; //Decrement Flashreg
+	Flashreg--; //Decrement Flashreg
 	
 	if (Flashreg < 0) //when below 0
 	{
@@ -145,7 +118,7 @@ void Cycle_lights_Rev()
 	}
 	
 	
-	mydelay(10); //delay 100ms
+	mydelay(Delay_Time); //delay 100ms
 	
 }
 
@@ -178,13 +151,6 @@ void mydelay(int Delay_Time)
 	
 }
 
-void Random_Light()
-{
-	
-}
-
-
-
 ISR(PCINT0_vect)
 {
 	if(PINB == (PINB & ~(1<<button))) //button goes low
@@ -192,7 +158,17 @@ ISR(PCINT0_vect)
 		if(Flashreg == 0)
 		{
 			All_On(5);
-			Direction ^= 1; 
+			Direction ^= 1;
+			if(Win_time > 1)
+			{
+				Delay_Time -= 2;
+				if(Delay_Time < 4)
+				{
+					Delay_Time = 10;
+					Win_time = 0;
+				}
+			}
+			Win_time++;
 		}
 		else
 		{
@@ -203,6 +179,8 @@ ISR(PCINT0_vect)
 			FlashPort(Flashreg);
 			
 			mydelay(100);	
+			Delay_Time = 10;
+			Win_time = 0;
 		}
 	}
 }
