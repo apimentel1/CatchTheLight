@@ -3,31 +3,31 @@ Catch_The_Light.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000014  00800100  000003c8  0000045c  2**0
+  0 .data         00000014  00800100  000003b0  00000444  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000003c8  00000000  00000000  00000094  2**1
+  1 .text         000003b0  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000004  00800114  00800114  00000470  2**0
+  2 .bss          00000004  00800114  00800114  00000458  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000470  2**0
+  3 .comment      00000030  00000000  00000000  00000458  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000004a0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000488  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000060  00000000  00000000  000004e0  2**0
+  5 .debug_aranges 00000058  00000000  00000000  000004c8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000c79  00000000  00000000  00000540  2**0
+  6 .debug_info   00000c64  00000000  00000000  00000520  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000a4d  00000000  00000000  000011b9  2**0
+  7 .debug_abbrev 00000a37  00000000  00000000  00001184  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000004de  00000000  00000000  00001c06  2**0
+  8 .debug_line   000004c0  00000000  00000000  00001bbb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000100  00000000  00000000  000020e4  2**2
+  9 .debug_frame  000000f0  00000000  00000000  0000207c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000054a  00000000  00000000  000021e4  2**0
+ 10 .debug_str    0000053d  00000000  00000000  0000216c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000293  00000000  00000000  0000272e  2**0
+ 11 .debug_loc    00000291  00000000  00000000  000026a9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000050  00000000  00000000  000029c1  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  0000293a  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -36,8 +36,8 @@ Disassembly of section .text:
    0:	0c 94 5a 00 	jmp	0xb4	; 0xb4 <__ctors_end>
    4:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
    8:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
-   c:	0c 94 62 01 	jmp	0x2c4	; 0x2c4 <__vector_3>
-  10:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
+   c:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
+  10:	0c 94 5d 01 	jmp	0x2ba	; 0x2ba <__vector_4>
   14:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
   18:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
   1c:	0c 94 77 00 	jmp	0xee	; 0xee <__bad_interrupt>
@@ -91,7 +91,7 @@ Disassembly of section .text:
   c0:	11 e0       	ldi	r17, 0x01	; 1
   c2:	a0 e0       	ldi	r26, 0x00	; 0
   c4:	b1 e0       	ldi	r27, 0x01	; 1
-  c6:	e8 ec       	ldi	r30, 0xC8	; 200
+  c6:	e0 eb       	ldi	r30, 0xB0	; 176
   c8:	f3 e0       	ldi	r31, 0x03	; 3
   ca:	02 c0       	rjmp	.+4      	; 0xd0 <__do_copy_data+0x10>
   cc:	05 90       	lpm	r0, Z+
@@ -113,25 +113,27 @@ Disassembly of section .text:
   e0:	a8 31       	cpi	r26, 0x18	; 24
   e2:	b2 07       	cpc	r27, r18
   e4:	e1 f7       	brne	.-8      	; 0xde <.do_clear_bss_loop>
-  e6:	0e 94 42 01 	call	0x284	; 0x284 <main>
-  ea:	0c 94 e2 01 	jmp	0x3c4	; 0x3c4 <_exit>
+  e6:	0e 94 3f 01 	call	0x27e	; 0x27e <main>
+  ea:	0c 94 d6 01 	jmp	0x3ac	; 0x3ac <_exit>
 
 000000ee <__bad_interrupt>:
   ee:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000f2 <FlashPort>:
-	}
-	
-}
-
-void Random_Light()
+void FlashPort(int Led)
 {
+	//Flashreg is the index into array Ledtab
+	//Ex Led # |1|2|3|...|15|16|
+	//Ledtab # |0|1|2|...|14|15|
+	if(Led < 4 || Led > 12)
   f2:	9c 01       	movw	r18, r24
   f4:	24 50       	subi	r18, 0x04	; 4
   f6:	31 09       	sbc	r19, r1
   f8:	29 30       	cpi	r18, 0x09	; 9
   fa:	31 05       	cpc	r19, r1
   fc:	80 f0       	brcs	.+32     	; 0x11e <FlashPort+0x2c>
+	{
+		PORTD |= (1<< Ledtab[Led]);
   fe:	4b b1       	in	r20, 0x0b	; 11
  100:	fc 01       	movw	r30, r24
  102:	ec 5f       	subi	r30, 0xFC	; 252
@@ -148,9 +150,13 @@ void Random_Light()
  118:	84 2b       	or	r24, r20
  11a:	8b b9       	out	0x0b, r24	; 11
  11c:	08 95       	ret
+	}
+	else if(Led < 8)
  11e:	88 30       	cpi	r24, 0x08	; 8
  120:	91 05       	cpc	r25, r1
  122:	84 f4       	brge	.+32     	; 0x144 <FlashPort+0x52>
+	{
+		PORTC |= (1<< Ledtab[Led]);
  124:	48 b1       	in	r20, 0x08	; 8
  126:	fc 01       	movw	r30, r24
  128:	ec 5f       	subi	r30, 0xFC	; 252
@@ -167,6 +173,10 @@ void Random_Light()
  13e:	84 2b       	or	r24, r20
  140:	88 b9       	out	0x08, r24	; 8
  142:	08 95       	ret
+	}
+	else
+	{
+		PORTB |= (1<< Ledtab[Led]);
  144:	45 b1       	in	r20, 0x05	; 5
  146:	fc 01       	movw	r30, r24
  148:	ec 5f       	subi	r30, 0xFC	; 252
@@ -185,13 +195,25 @@ void Random_Light()
  162:	08 95       	ret
 
 00000164 <mydelay>:
+	
+}
+
+void mydelay(int Delay_Time)
+{
+	for(int i = 0; i < Delay_Time; i++)
  164:	18 16       	cp	r1, r24
  166:	19 06       	cpc	r1, r25
  168:	6c f4       	brge	.+26     	; 0x184 <mydelay+0x20>
  16a:	20 e0       	ldi	r18, 0x00	; 0
  16c:	30 e0       	ldi	r19, 0x00	; 0
- 16e:	ef e3       	ldi	r30, 0x3F	; 63
- 170:	fc e9       	ldi	r31, 0x9C	; 156
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 16e:	e3 ec       	ldi	r30, 0xC3	; 195
+ 170:	f9 e0       	ldi	r31, 0x09	; 9
  172:	31 97       	sbiw	r30, 0x01	; 1
  174:	f1 f7       	brne	.-4      	; 0x172 <mydelay+0xe>
  176:	00 c0       	rjmp	.+0      	; 0x178 <mydelay+0x14>
@@ -204,15 +226,27 @@ void Random_Light()
  184:	08 95       	ret
 
 00000186 <Cycle_lights>:
+	}
+}
+
+void Cycle_lights()
+{
+	PORTD &= 0x0; //turn off all led
  186:	8b b1       	in	r24, 0x0b	; 11
  188:	1b b8       	out	0x0b, r1	; 11
+	PORTB &= 0x0;
  18a:	85 b1       	in	r24, 0x05	; 5
  18c:	15 b8       	out	0x05, r1	; 5
+	PORTC &= 0x0;
  18e:	88 b1       	in	r24, 0x08	; 8
  190:	18 b8       	out	0x08, r1	; 8
+	
+	FlashPort(Flashreg); //Flash the light
  192:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
  196:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
  19a:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
+	
+	Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
  19e:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
  1a2:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
  1a6:	01 96       	adiw	r24, 0x01	; 1
@@ -220,276 +254,363 @@ void Random_Light()
  1aa:	99 27       	eor	r25, r25
  1ac:	90 93 17 01 	sts	0x0117, r25	; 0x800117 <Flashreg+0x1>
  1b0:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <Flashreg>
+	
+	mydelay(Delay_Time); //delay 50ms
  1b4:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <Delay_Time>
  1b8:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <Delay_Time+0x1>
  1bc:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
  1c0:	08 95       	ret
 
 000001c2 <Cycle_lights_Rev>:
+	
+}
+
+void Cycle_lights_Rev()
+{
+	PORTD &= 0x0; //turn off all led
  1c2:	8b b1       	in	r24, 0x0b	; 11
  1c4:	1b b8       	out	0x0b, r1	; 11
+	PORTB &= 0x0;
  1c6:	85 b1       	in	r24, 0x05	; 5
  1c8:	15 b8       	out	0x05, r1	; 5
+	PORTC &= 0x0;
  1ca:	88 b1       	in	r24, 0x08	; 8
  1cc:	18 b8       	out	0x08, r1	; 8
+	
+	FlashPort(Flashreg); //Flash the led
  1ce:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
  1d2:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
  1d6:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
+	
+	Flashreg--; //Decrement Flashreg
  1da:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
  1de:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
  1e2:	01 97       	sbiw	r24, 0x01	; 1
+	
+	if (Flashreg < 0) //when below 0
  1e4:	2a f0       	brmi	.+10     	; 0x1f0 <Cycle_lights_Rev+0x2e>
+	PORTB &= 0x0;
+	PORTC &= 0x0;
+	
+	FlashPort(Flashreg); //Flash the led
+	
+	Flashreg--; //Decrement Flashreg
  1e6:	90 93 17 01 	sts	0x0117, r25	; 0x800117 <Flashreg+0x1>
  1ea:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <Flashreg>
  1ee:	06 c0       	rjmp	.+12     	; 0x1fc <Cycle_lights_Rev+0x3a>
+	
+	if (Flashreg < 0) //when below 0
+	{
+		Flashreg = 15; //reset to 15
  1f0:	8f e0       	ldi	r24, 0x0F	; 15
  1f2:	90 e0       	ldi	r25, 0x00	; 0
  1f4:	90 93 17 01 	sts	0x0117, r25	; 0x800117 <Flashreg+0x1>
  1f8:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <Flashreg>
+	}
+	
+	
+	mydelay(Delay_Time); //delay 100ms
  1fc:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <Delay_Time>
  200:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <Delay_Time+0x1>
  204:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
  208:	08 95       	ret
 
 0000020a <Light_Direction>:
+    }
+}
+
+void Light_Direction()
+{
+	if (Direction)
  20a:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <Direction>
  20e:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <Direction+0x1>
  212:	89 2b       	or	r24, r25
  214:	19 f0       	breq	.+6      	; 0x21c <Light_Direction+0x12>
+	{
+		Cycle_lights();
  216:	0e 94 c3 00 	call	0x186	; 0x186 <Cycle_lights>
  21a:	08 95       	ret
+	} 
+	else
+	{
+		Cycle_lights_Rev();
  21c:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <Cycle_lights_Rev>
  220:	08 95       	ret
 
 00000222 <All_On>:
+	mydelay(Delay_Time); //delay 100ms
+	
+}
+
+void All_On (int Flashtime)
+{
  222:	0f 93       	push	r16
  224:	1f 93       	push	r17
  226:	cf 93       	push	r28
  228:	df 93       	push	r29
+	int Count = 0;
+	while (Count < Flashtime)
  22a:	18 16       	cp	r1, r24
  22c:	19 06       	cpc	r1, r25
- 22e:	2c f5       	brge	.+74     	; 0x27a <All_On+0x58>
+ 22e:	14 f5       	brge	.+68     	; 0x274 <All_On+0x52>
  230:	ec 01       	movw	r28, r24
  232:	00 e0       	ldi	r16, 0x00	; 0
  234:	10 e0       	ldi	r17, 0x00	; 0
+	{
+		PORTB &= 0x0; 
  236:	85 b1       	in	r24, 0x05	; 5
  238:	15 b8       	out	0x05, r1	; 5
+		PORTD &= 0x08; //all off but PD3 the target led
  23a:	8b b1       	in	r24, 0x0b	; 11
  23c:	88 70       	andi	r24, 0x08	; 8
  23e:	8b b9       	out	0x0b, r24	; 11
+		PORTC &= 0x0;
  240:	88 b1       	in	r24, 0x08	; 8
  242:	18 b8       	out	0x08, r1	; 8
- 244:	2f ef       	ldi	r18, 0xFF	; 255
- 246:	81 ee       	ldi	r24, 0xE1	; 225
- 248:	94 e0       	ldi	r25, 0x04	; 4
- 24a:	21 50       	subi	r18, 0x01	; 1
- 24c:	80 40       	sbci	r24, 0x00	; 0
- 24e:	90 40       	sbci	r25, 0x00	; 0
- 250:	e1 f7       	brne	.-8      	; 0x24a <All_On+0x28>
- 252:	00 c0       	rjmp	.+0      	; 0x254 <All_On+0x32>
- 254:	00 00       	nop
- 256:	95 b1       	in	r25, 0x05	; 5
- 258:	9f 61       	ori	r25, 0x1F	; 31
- 25a:	95 b9       	out	0x05, r25	; 5
- 25c:	9b b1       	in	r25, 0x0b	; 11
- 25e:	9f 6e       	ori	r25, 0xEF	; 239
- 260:	9b b9       	out	0x0b, r25	; 11
- 262:	98 b1       	in	r25, 0x08	; 8
- 264:	9c 63       	ori	r25, 0x3C	; 60
- 266:	98 b9       	out	0x08, r25	; 8
- 268:	8a e0       	ldi	r24, 0x0A	; 10
- 26a:	90 e0       	ldi	r25, 0x00	; 0
- 26c:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
- 270:	0f 5f       	subi	r16, 0xFF	; 255
- 272:	1f 4f       	sbci	r17, 0xFF	; 255
- 274:	c0 17       	cp	r28, r16
- 276:	d1 07       	cpc	r29, r17
- 278:	f1 f6       	brne	.-68     	; 0x236 <All_On+0x14>
- 27a:	df 91       	pop	r29
- 27c:	cf 91       	pop	r28
- 27e:	1f 91       	pop	r17
- 280:	0f 91       	pop	r16
- 282:	08 95       	ret
-
-00000284 <main>:
- 284:	8a b1       	in	r24, 0x0a	; 10
- 286:	9f ef       	ldi	r25, 0xFF	; 255
- 288:	9a b9       	out	0x0a, r25	; 10
- 28a:	84 b1       	in	r24, 0x04	; 4
- 28c:	8f 67       	ori	r24, 0x7F	; 127
- 28e:	84 b9       	out	0x04, r24	; 4
- 290:	87 b1       	in	r24, 0x07	; 7
- 292:	97 b9       	out	0x07, r25	; 7
- 294:	2f 9a       	sbi	0x05, 7	; 5
- 296:	8b b1       	in	r24, 0x0b	; 11
- 298:	8b b9       	out	0x0b, r24	; 11
- 29a:	2f 9a       	sbi	0x05, 7	; 5
- 29c:	88 b1       	in	r24, 0x08	; 8
- 29e:	88 b9       	out	0x08, r24	; 8
- 2a0:	e8 e6       	ldi	r30, 0x68	; 104
- 2a2:	f0 e0       	ldi	r31, 0x00	; 0
- 2a4:	80 81       	ld	r24, Z
- 2a6:	81 60       	ori	r24, 0x01	; 1
- 2a8:	80 83       	st	Z, r24
- 2aa:	eb e6       	ldi	r30, 0x6B	; 107
- 2ac:	f0 e0       	ldi	r31, 0x00	; 0
- 2ae:	80 81       	ld	r24, Z
- 2b0:	80 68       	ori	r24, 0x80	; 128
- 2b2:	80 83       	st	Z, r24
- 2b4:	78 94       	sei
- 2b6:	85 e0       	ldi	r24, 0x05	; 5
- 2b8:	90 e0       	ldi	r25, 0x00	; 0
- 2ba:	0e 94 11 01 	call	0x222	; 0x222 <All_On>
- 2be:	0e 94 05 01 	call	0x20a	; 0x20a <Light_Direction>
- 2c2:	fd cf       	rjmp	.-6      	; 0x2be <main+0x3a>
-
-000002c4 <__vector_3>:
+ 244:	87 ea       	ldi	r24, 0xA7	; 167
+ 246:	91 e6       	ldi	r25, 0x61	; 97
+ 248:	01 97       	sbiw	r24, 0x01	; 1
+ 24a:	f1 f7       	brne	.-4      	; 0x248 <All_On+0x26>
+ 24c:	00 c0       	rjmp	.+0      	; 0x24e <All_On+0x2c>
+ 24e:	00 00       	nop
+		_delay_ms(100);
+		
+		PORTB |= 0x1F; //all on
+ 250:	95 b1       	in	r25, 0x05	; 5
+ 252:	9f 61       	ori	r25, 0x1F	; 31
+ 254:	95 b9       	out	0x05, r25	; 5
+		PORTD |= 0xEF;
+ 256:	9b b1       	in	r25, 0x0b	; 11
+ 258:	9f 6e       	ori	r25, 0xEF	; 239
+ 25a:	9b b9       	out	0x0b, r25	; 11
+		PORTC |= 0x3C;
+ 25c:	98 b1       	in	r25, 0x08	; 8
+ 25e:	9c 63       	ori	r25, 0x3C	; 60
+ 260:	98 b9       	out	0x08, r25	; 8
+		mydelay(10); //100ms delay
+ 262:	8a e0       	ldi	r24, 0x0A	; 10
+ 264:	90 e0       	ldi	r25, 0x00	; 0
+ 266:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
+		
+		Count++;
+ 26a:	0f 5f       	subi	r16, 0xFF	; 255
+ 26c:	1f 4f       	sbci	r17, 0xFF	; 255
 }
 
-
-
-ISR(PCINT0_vect)
+void All_On (int Flashtime)
 {
- 2c4:	1f 92       	push	r1
- 2c6:	0f 92       	push	r0
- 2c8:	0f b6       	in	r0, 0x3f	; 63
- 2ca:	0f 92       	push	r0
- 2cc:	11 24       	eor	r1, r1
- 2ce:	2f 93       	push	r18
- 2d0:	3f 93       	push	r19
- 2d2:	4f 93       	push	r20
- 2d4:	5f 93       	push	r21
- 2d6:	6f 93       	push	r22
- 2d8:	7f 93       	push	r23
- 2da:	8f 93       	push	r24
- 2dc:	9f 93       	push	r25
- 2de:	af 93       	push	r26
- 2e0:	bf 93       	push	r27
- 2e2:	ef 93       	push	r30
- 2e4:	ff 93       	push	r31
-	if(PINB == (PINB & ~(1<<button))) //button goes low
- 2e6:	23 b1       	in	r18, 0x03	; 3
- 2e8:	83 b1       	in	r24, 0x03	; 3
- 2ea:	30 e0       	ldi	r19, 0x00	; 0
- 2ec:	90 e0       	ldi	r25, 0x00	; 0
- 2ee:	8f 77       	andi	r24, 0x7F	; 127
- 2f0:	28 17       	cp	r18, r24
- 2f2:	39 07       	cpc	r19, r25
- 2f4:	09 f0       	breq	.+2      	; 0x2f8 <__vector_3+0x34>
- 2f6:	55 c0       	rjmp	.+170    	; 0x3a2 <__vector_3+0xde>
+	int Count = 0;
+	while (Count < Flashtime)
+ 26e:	c0 17       	cp	r28, r16
+ 270:	d1 07       	cpc	r29, r17
+ 272:	09 f7       	brne	.-62     	; 0x236 <All_On+0x14>
+		mydelay(10); //100ms delay
+		
+		Count++;
+	}
+	
+}
+ 274:	df 91       	pop	r29
+ 276:	cf 91       	pop	r28
+ 278:	1f 91       	pop	r17
+ 27a:	0f 91       	pop	r16
+ 27c:	08 95       	ret
+
+0000027e <main>:
+int Delay_Time = 10;
+int Win_time = 0;
+
+int main(void)
+{
+	DDRD |= 0xFF;
+ 27e:	8a b1       	in	r24, 0x0a	; 10
+ 280:	8f ef       	ldi	r24, 0xFF	; 255
+ 282:	8a b9       	out	0x0a, r24	; 10
+	DDRB |= 0x7F;
+ 284:	84 b1       	in	r24, 0x04	; 4
+ 286:	8f 67       	ori	r24, 0x7F	; 127
+ 288:	84 b9       	out	0x04, r24	; 4
+	DDRC = 0xff & ~(1<<button) ;
+ 28a:	8d ef       	ldi	r24, 0xFD	; 253
+ 28c:	87 b9       	out	0x07, r24	; 7
+	
+	
+	PORTC |= (1<<button); //enable pull-up resistor for PB7
+ 28e:	41 9a       	sbi	0x08, 1	; 8
+	
+	PORTD |= 0x0; //Turn off leds
+ 290:	8b b1       	in	r24, 0x0b	; 11
+ 292:	8b b9       	out	0x0b, r24	; 11
+	PORTB |= ~(0x7F);
+ 294:	2f 9a       	sbi	0x05, 7	; 5
+	//PORTC |= 0x0;
+	
+	PCICR |= (1 << PCIE1);
+ 296:	e8 e6       	ldi	r30, 0x68	; 104
+ 298:	f0 e0       	ldi	r31, 0x00	; 0
+ 29a:	80 81       	ld	r24, Z
+ 29c:	82 60       	ori	r24, 0x02	; 2
+ 29e:	80 83       	st	Z, r24
+	PCMSK1 |= (1 << PCINT9);
+ 2a0:	ec e6       	ldi	r30, 0x6C	; 108
+ 2a2:	f0 e0       	ldi	r31, 0x00	; 0
+ 2a4:	80 81       	ld	r24, Z
+ 2a6:	82 60       	ori	r24, 0x02	; 2
+ 2a8:	80 83       	st	Z, r24
+	sei();
+ 2aa:	78 94       	sei
+	
+	All_On(5);
+ 2ac:	85 e0       	ldi	r24, 0x05	; 5
+ 2ae:	90 e0       	ldi	r25, 0x00	; 0
+ 2b0:	0e 94 11 01 	call	0x222	; 0x222 <All_On>
+
+    while (1) 
+    {
+		Light_Direction();
+ 2b4:	0e 94 05 01 	call	0x20a	; 0x20a <Light_Direction>
+ 2b8:	fd cf       	rjmp	.-6      	; 0x2b4 <main+0x36>
+
+000002ba <__vector_4>:
+	}
+	
+}
+
+ISR(PCINT1_vect)
+{
+ 2ba:	1f 92       	push	r1
+ 2bc:	0f 92       	push	r0
+ 2be:	0f b6       	in	r0, 0x3f	; 63
+ 2c0:	0f 92       	push	r0
+ 2c2:	11 24       	eor	r1, r1
+ 2c4:	2f 93       	push	r18
+ 2c6:	3f 93       	push	r19
+ 2c8:	4f 93       	push	r20
+ 2ca:	5f 93       	push	r21
+ 2cc:	6f 93       	push	r22
+ 2ce:	7f 93       	push	r23
+ 2d0:	8f 93       	push	r24
+ 2d2:	9f 93       	push	r25
+ 2d4:	af 93       	push	r26
+ 2d6:	bf 93       	push	r27
+ 2d8:	ef 93       	push	r30
+ 2da:	ff 93       	push	r31
+	if( (PINC & (1<<button)) == 0 ) //button goes low
+ 2dc:	31 99       	sbic	0x06, 1	; 6
+ 2de:	55 c0       	rjmp	.+170    	; 0x38a <__vector_4+0xd0>
 	{
 		if(Flashreg == 0)
- 2f8:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
- 2fc:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
- 300:	89 2b       	or	r24, r25
- 302:	a9 f5       	brne	.+106    	; 0x36e <__vector_3+0xaa>
+ 2e0:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
+ 2e4:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
+ 2e8:	89 2b       	or	r24, r25
+ 2ea:	a9 f5       	brne	.+106    	; 0x356 <__vector_4+0x9c>
 		{
 			All_On(5);
- 304:	85 e0       	ldi	r24, 0x05	; 5
- 306:	90 e0       	ldi	r25, 0x00	; 0
- 308:	0e 94 11 01 	call	0x222	; 0x222 <All_On>
+ 2ec:	85 e0       	ldi	r24, 0x05	; 5
+ 2ee:	90 e0       	ldi	r25, 0x00	; 0
+ 2f0:	0e 94 11 01 	call	0x222	; 0x222 <All_On>
 			Direction ^= 1;
- 30c:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <Direction>
- 310:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <Direction+0x1>
- 314:	21 e0       	ldi	r18, 0x01	; 1
- 316:	82 27       	eor	r24, r18
- 318:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <Direction+0x1>
- 31c:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <Direction>
-			if(Win_time>1)
- 320:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <__data_end>
- 324:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <__data_end+0x1>
- 328:	02 97       	sbiw	r24, 0x02	; 2
- 32a:	bc f0       	brlt	.+46     	; 0x35a <__vector_3+0x96>
+ 2f4:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <Direction>
+ 2f8:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <Direction+0x1>
+ 2fc:	21 e0       	ldi	r18, 0x01	; 1
+ 2fe:	82 27       	eor	r24, r18
+ 300:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <Direction+0x1>
+ 304:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <Direction>
+			if(Win_time > 1)
+ 308:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <__data_end>
+ 30c:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <__data_end+0x1>
+ 310:	02 97       	sbiw	r24, 0x02	; 2
+ 312:	bc f0       	brlt	.+46     	; 0x342 <__vector_4+0x88>
 			{
 				Delay_Time -= 2;
- 32c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <Delay_Time>
- 330:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <Delay_Time+0x1>
- 334:	02 97       	sbiw	r24, 0x02	; 2
-				if(Delay_Time < 4)
- 336:	84 30       	cpi	r24, 0x04	; 4
- 338:	91 05       	cpc	r25, r1
- 33a:	2c f0       	brlt	.+10     	; 0x346 <__vector_3+0x82>
+ 314:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <Delay_Time>
+ 318:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <Delay_Time+0x1>
+ 31c:	02 97       	sbiw	r24, 0x02	; 2
+				if(Delay_Time < 1)
+ 31e:	18 16       	cp	r1, r24
+ 320:	19 06       	cpc	r1, r25
+ 322:	2c f4       	brge	.+10     	; 0x32e <__vector_4+0x74>
 		{
 			All_On(5);
 			Direction ^= 1;
-			if(Win_time>1)
+			if(Win_time > 1)
 			{
 				Delay_Time -= 2;
- 33c:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
- 340:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
- 344:	0a c0       	rjmp	.+20     	; 0x35a <__vector_3+0x96>
-				if(Delay_Time < 4)
+ 324:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
+ 328:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
+ 32c:	0a c0       	rjmp	.+20     	; 0x342 <__vector_4+0x88>
+				if(Delay_Time < 1)
 				{
 					Delay_Time = 10;
- 346:	8a e0       	ldi	r24, 0x0A	; 10
- 348:	90 e0       	ldi	r25, 0x00	; 0
- 34a:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
- 34e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
+ 32e:	8a e0       	ldi	r24, 0x0A	; 10
+ 330:	90 e0       	ldi	r25, 0x00	; 0
+ 332:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
+ 336:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
 					Win_time = 0;
- 352:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <__data_end+0x1>
- 356:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <__data_end>
+ 33a:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <__data_end+0x1>
+ 33e:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <__data_end>
 				}
 			}
 			Win_time++;
- 35a:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <__data_end>
- 35e:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <__data_end+0x1>
- 362:	01 96       	adiw	r24, 0x01	; 1
- 364:	90 93 15 01 	sts	0x0115, r25	; 0x800115 <__data_end+0x1>
- 368:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <__data_end>
- 36c:	1a c0       	rjmp	.+52     	; 0x3a2 <__vector_3+0xde>
+ 342:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <__data_end>
+ 346:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <__data_end+0x1>
+ 34a:	01 96       	adiw	r24, 0x01	; 1
+ 34c:	90 93 15 01 	sts	0x0115, r25	; 0x800115 <__data_end+0x1>
+ 350:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <__data_end>
+ 354:	1a c0       	rjmp	.+52     	; 0x38a <__vector_4+0xd0>
 		}
 		else
 		{
 			PORTD &= 0x0; //turn off all led
- 36e:	8b b1       	in	r24, 0x0b	; 11
- 370:	1b b8       	out	0x0b, r1	; 11
+ 356:	8b b1       	in	r24, 0x0b	; 11
+ 358:	1b b8       	out	0x0b, r1	; 11
 			PORTB &= 0x0;
- 372:	85 b1       	in	r24, 0x05	; 5
- 374:	15 b8       	out	0x05, r1	; 5
+ 35a:	85 b1       	in	r24, 0x05	; 5
+ 35c:	15 b8       	out	0x05, r1	; 5
 			PORTC &= 0x0;
- 376:	88 b1       	in	r24, 0x08	; 8
- 378:	18 b8       	out	0x08, r1	; 8
+ 35e:	88 b1       	in	r24, 0x08	; 8
+ 360:	18 b8       	out	0x08, r1	; 8
 			
 			FlashPort(Flashreg);
- 37a:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
- 37e:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
- 382:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
+ 362:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <Flashreg>
+ 366:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <Flashreg+0x1>
+ 36a:	0e 94 79 00 	call	0xf2	; 0xf2 <FlashPort>
 			
 			mydelay(100);	
- 386:	84 e6       	ldi	r24, 0x64	; 100
- 388:	90 e0       	ldi	r25, 0x00	; 0
- 38a:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
+ 36e:	84 e6       	ldi	r24, 0x64	; 100
+ 370:	90 e0       	ldi	r25, 0x00	; 0
+ 372:	0e 94 b2 00 	call	0x164	; 0x164 <mydelay>
 			Delay_Time = 10;
- 38e:	8a e0       	ldi	r24, 0x0A	; 10
- 390:	90 e0       	ldi	r25, 0x00	; 0
- 392:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
- 396:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
+ 376:	8a e0       	ldi	r24, 0x0A	; 10
+ 378:	90 e0       	ldi	r25, 0x00	; 0
+ 37a:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <Delay_Time+0x1>
+ 37e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <Delay_Time>
 			Win_time = 0;
- 39a:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <__data_end+0x1>
- 39e:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <__data_end>
+ 382:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <__data_end+0x1>
+ 386:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <__data_end>
 		}
 	}
 }
- 3a2:	ff 91       	pop	r31
- 3a4:	ef 91       	pop	r30
- 3a6:	bf 91       	pop	r27
- 3a8:	af 91       	pop	r26
- 3aa:	9f 91       	pop	r25
- 3ac:	8f 91       	pop	r24
- 3ae:	7f 91       	pop	r23
- 3b0:	6f 91       	pop	r22
- 3b2:	5f 91       	pop	r21
- 3b4:	4f 91       	pop	r20
- 3b6:	3f 91       	pop	r19
- 3b8:	2f 91       	pop	r18
- 3ba:	0f 90       	pop	r0
- 3bc:	0f be       	out	0x3f, r0	; 63
- 3be:	0f 90       	pop	r0
- 3c0:	1f 90       	pop	r1
- 3c2:	18 95       	reti
+ 38a:	ff 91       	pop	r31
+ 38c:	ef 91       	pop	r30
+ 38e:	bf 91       	pop	r27
+ 390:	af 91       	pop	r26
+ 392:	9f 91       	pop	r25
+ 394:	8f 91       	pop	r24
+ 396:	7f 91       	pop	r23
+ 398:	6f 91       	pop	r22
+ 39a:	5f 91       	pop	r21
+ 39c:	4f 91       	pop	r20
+ 39e:	3f 91       	pop	r19
+ 3a0:	2f 91       	pop	r18
+ 3a2:	0f 90       	pop	r0
+ 3a4:	0f be       	out	0x3f, r0	; 63
+ 3a6:	0f 90       	pop	r0
+ 3a8:	1f 90       	pop	r1
+ 3aa:	18 95       	reti
 
-000003c4 <_exit>:
- 3c4:	f8 94       	cli
+000003ac <_exit>:
+ 3ac:	f8 94       	cli
 
-000003c6 <__stop_program>:
- 3c6:	ff cf       	rjmp	.-2      	; 0x3c6 <__stop_program>
+000003ae <__stop_program>:
+ 3ae:	ff cf       	rjmp	.-2      	; 0x3ae <__stop_program>

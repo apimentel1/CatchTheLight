@@ -13,7 +13,7 @@ void mydelay(int Delay_Time);
 void Light_Direction();
 
 #include <avr/io.h>
-#define F_CPU 16000000UL
+#define F_CPU 1000000UL
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
@@ -27,7 +27,7 @@ uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 
 int Flashreg = 0;
 int Num = 15;
-#define button 7
+#define button 1
 int Direction = 1;
 int Delay_Time = 10;
 int Win_time = 0;
@@ -36,17 +36,17 @@ int main(void)
 {
 	DDRD |= 0xFF;
 	DDRB |= 0x7F;
-	DDRC |= 0xFF;
+	DDRC = 0xff & ~(1<<button) ;
 	
 	
-	PORTB |= (1<<button); //enable pull-up resistor for PB7
+	PORTC |= (1<<button); //enable pull-up resistor for PB7
 	
 	PORTD |= 0x0; //Turn off leds
 	PORTB |= ~(0x7F);
-	PORTC |= 0x0;
+	//PORTC |= 0x0;
 	
-	PCICR |= (1 << PCIE0);
-	PCMSK0 |= (1 << PCINT7);
+	PCICR |= (1 << PCIE1);
+	PCMSK1 |= (1 << PCINT9);
 	sei();
 	
 	All_On(5);
@@ -151,9 +151,9 @@ void mydelay(int Delay_Time)
 	
 }
 
-ISR(PCINT0_vect)
+ISR(PCINT1_vect)
 {
-	if(PINB == (PINB & ~(1<<button))) //button goes low
+	if( (PINC & (1<<button)) == 0 ) //button goes low
 	{
 		if(Flashreg == 0)
 		{
@@ -162,7 +162,7 @@ ISR(PCINT0_vect)
 			if(Win_time > 1)
 			{
 				Delay_Time -= 2;
-				if(Delay_Time < 4)
+				if(Delay_Time < 1)
 				{
 					Delay_Time = 10;
 					Win_time = 0;
