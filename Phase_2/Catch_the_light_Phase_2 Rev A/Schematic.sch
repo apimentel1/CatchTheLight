@@ -10261,7 +10261,7 @@ Source: AVX .. aphvc.pdf</description>
 <wire x1="-8.128" y1="0" x2="-7.62" y2="0" width="0.127" layer="21"/>
 </package>
 <package name="TEST_POINT">
-<smd name="P$1" x="0" y="0" dx="0.508" dy="0.508" layer="1" roundness="100"/>
+<smd name="P$1" x="0" y="0" dx="1.27" dy="1.27" layer="1" roundness="100"/>
 </package>
 <package name="HEADERPIN">
 <pad name="1" x="0" y="3.81" drill="0.9" diameter="1.6256"/>
@@ -38386,7 +38386,7 @@ reflow soldering</description>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="BATT" library="My-library_" deviceset="BC-2003" device="SMD"/>
+<part name="CR2032" library="My-library_" deviceset="BC-2003" device="SMD"/>
 <part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100n"/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R17" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
@@ -38407,7 +38407,7 @@ reflow soldering</description>
 <part name="LED6" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0805" package3d_urn="urn:adsk.eagle:package:15818/2" value="Red"/>
 <part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.5k"/>
 <part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.5k"/>
-<part name="LED5" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0805" package3d_urn="urn:adsk.eagle:package:15818/2"/>
+<part name="LED5" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0805" package3d_urn="urn:adsk.eagle:package:15818/2" value="RED"/>
 <part name="LED4" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0805" package3d_urn="urn:adsk.eagle:package:15818/2" value="Red"/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.5k"/>
 <part name="LED3" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0805" package3d_urn="urn:adsk.eagle:package:15818/2" value="Red"/>
@@ -38510,7 +38510,7 @@ from reversed battery</text>
 <instance part="GND4" gate="1" x="30.48" y="142.24" smashed="yes">
 <attribute name="VALUE" x="27.94" y="139.7" size="1.778" layer="96"/>
 </instance>
-<instance part="BATT" gate="G$1" x="177.8" y="109.22" smashed="yes"/>
+<instance part="CR2032" gate="G$1" x="177.8" y="109.22" smashed="yes"/>
 <instance part="C1" gate="G$1" x="200.66" y="137.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="200.025" y="138.176" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="204.851" y="138.176" size="1.778" layer="96" rot="R90"/>
@@ -38746,9 +38746,7 @@ from reversed battery</text>
 <instance part="+3V9" gate="G$1" x="302.26" y="165.1" smashed="yes" rot="R90">
 <attribute name="VALUE" x="307.34" y="162.56" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="U$6" gate="G$1" x="111.76" y="30.48" smashed="yes">
-<attribute name="NAME" x="116.84" y="35.56" size="2.54" layer="95" rot="R90"/>
-</instance>
+<instance part="U$6" gate="G$1" x="111.76" y="30.48" smashed="yes"/>
 <instance part="Q2" gate="G$1" x="195.58" y="129.54" smashed="yes" rot="R180">
 <attribute name="VALUE" x="193.03616875" y="132.08383125" size="1.78068125" layer="96" rot="R180"/>
 <attribute name="NAME" x="193.037790625" y="129.54" size="1.77955" layer="95" rot="R180"/>
@@ -38855,7 +38853,7 @@ from reversed battery</text>
 <wire x1="154.94" y1="162.56" x2="154.94" y2="154.94" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="BATT" gate="G$1" pin="GND"/>
+<pinref part="CR2032" gate="G$1" pin="GND"/>
 <pinref part="GND2" gate="1" pin="GND"/>
 <wire x1="162.306" y1="110.616" x2="157.48" y2="110.616" width="0.1524" layer="91"/>
 <wire x1="157.48" y1="110.616" x2="157.48" y2="81.28" width="0.1524" layer="91"/>
@@ -39453,9 +39451,9 @@ from reversed battery</text>
 <net name="N$2" class="0">
 <segment>
 <wire x1="195.58" y1="115.076" x2="195.58" y2="105.616" width="0.1524" layer="91"/>
-<pinref part="BATT" gate="G$1" pin="+V@2"/>
+<pinref part="CR2032" gate="G$1" pin="+V@2"/>
 <wire x1="187.226" y1="105.616" x2="195.58" y2="105.616" width="0.1524" layer="91"/>
-<pinref part="BATT" gate="G$1" pin="+V@1"/>
+<pinref part="CR2032" gate="G$1" pin="+V@1"/>
 <wire x1="187.226" y1="115.076" x2="195.58" y2="115.076" width="0.1524" layer="91"/>
 <pinref part="Q2" gate="G$1" pin="D"/>
 <wire x1="195.58" y1="124.46" x2="195.58" y2="115.076" width="0.1524" layer="91"/>
