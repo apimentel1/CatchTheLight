@@ -26,7 +26,6 @@ uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 
 
 int Flashreg = 0;
-int Num = 15;
 #define button 1
 int Direction = 1;
 int Delay_Time = 10;
@@ -36,7 +35,7 @@ int main(void)
 {
 	DDRD |= 0xFF;
 	DDRB |= 0x7F;
-	DDRC = 0xff & ~(1<<button) ;
+	DDRC = 0xFF & ~(1<<button) ;
 	
 	
 	PORTC |= (1<<button); //enable pull-up resistor for PB7
