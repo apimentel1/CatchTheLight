@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000058  00000000  00000000  000004c8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000c64  00000000  00000000  00000520  2**0
+  6 .debug_info   00000c52  00000000  00000000  00000520  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000a37  00000000  00000000  00001184  2**0
+  7 .debug_abbrev 00000a26  00000000  00000000  00001172  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000004c0  00000000  00000000  00001bbb  2**0
+  8 .debug_line   000004c0  00000000  00000000  00001b98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000f0  00000000  00000000  0000207c  2**2
+  9 .debug_frame  000000f0  00000000  00000000  00002058  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000053d  00000000  00000000  0000216c  2**0
+ 10 .debug_str    0000053d  00000000  00000000  00002148  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000291  00000000  00000000  000026a9  2**0
+ 11 .debug_loc    00000291  00000000  00000000  00002685  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000048  00000000  00000000  0000293a  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  00002916  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -430,7 +430,7 @@ int main(void)
  284:	84 b1       	in	r24, 0x04	; 4
  286:	8f 67       	ori	r24, 0x7F	; 127
  288:	84 b9       	out	0x04, r24	; 4
-	DDRC = 0xff & ~(1<<button) ;
+	DDRC = 0xFF & ~(1<<button) ;
  28a:	8d ef       	ldi	r24, 0xFD	; 253
  28c:	87 b9       	out	0x07, r24	; 7
 	
