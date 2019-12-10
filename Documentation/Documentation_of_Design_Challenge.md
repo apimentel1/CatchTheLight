@@ -69,19 +69,36 @@ In the case that the user put the battery in backwards, it was important to incl
 **PAHSE 2 EAGLE SCHEMATIC**
 
 ## Special Features to Note in the Phase 2 Schematic
-1. Decoupling Capacitor circuit
+1. **Decoupling Capacitor circuit**
 - The purpose of the decoupling capacitor circuit in the schematic is to oppose any quick changes in voltage that the Atmega328PB might be exposed to. In the case that the voltage suddenly drops, the capacitors apply the necessary voltage to the microprocessor. If there is an excess of voltage, the opposite will occur, and the capacitors will absorb the excess voltage and store it. The use of decoupling capacitors is a common practice when working with microcontroller and microprocessors.
 
-2. Battery/PCB protection circuit 
+2. **Battery/PCB protection circuit** 
 - As previously mentioned, the purpose of including this circuit in the design is to protect the PCB in the case that the user accidently inserts the battery the wrong way into the battery holder. Without any protective measures, the PCB would short circuit and the game would no longer be functional. To prevent this from happening a PFET was used in conjunction with a decoupling capacitor that was wired in series with the battery holder.
 
-3. SPI connector
+3. **SPI connector**
 - It was important to include an SPI connector into the design of the PCB to have a means of debugging the code written for the Catch the Light game as well as prototyping. There is a tag connect on the PCB which makes the design more efficient for production, however it is also a nuisance seeing as it has to be held in place on the board.
 
-4. Pull up/down resistor circuit
+4. **Pull up/down resistor circuit**
 - The pull up and pull-down resistors in the circuit are used for switching between the capacitive touch button and the mechanical push button. The reason for doing this is to have the ability to have two options for controlling the game. It was also planned that this feature would be helpful when testing if the game functions properly in the case that the code for the capacitive touch button was not yet written.
 
-5. Test points on PCB
+5. **Test points on PCB**
 - The test points placed around the board in the schematic are to allow for physical debugging of the PCB. This feature allows us to observe the voltage in different areas on  the PCB using a digital multimeter. The test points also served as a method to troubleshoot the PCB in the case that a component was not working.
+
+## Building the PCB for Pahse 2
+After finishing the schematic and passing EAGLE’s ERC test to check for any wiring errors in the schematic, the PCB was able to be constructed. As per the recommendation of Dr. Viall, the bottom of the board was rectangular while the top of the board was rounded in the shape of a semicircle. The size of the board remained under the 10 x 10cm limit stated in the phase 2 requirements document, however the design offered a better aesthetic to the game. In addition to the shape of the board, Dr. Viall also recommended a great way to lay out the components on the PCB. This idea consisted of the battery holder being placed in the middle of the circular pattern of LEDs and resistors while also aligning the Atmega328PB and the capacitive touch button with the center of the board. Unlike phase 1, phase 2 featured 16 LEDs in three different colors that made up the circular pattern. The design featured 13 red, 2 blue, and 1 green LED.  By having the components on the PCB in this manner, it was easy to fit the rest of the components that were needed on the board as well. 
+
+In addition to the components present on the board, the requirements document also specified that three different graphics had to be silkscreened on the board. The three graphics were the name of the university (UMASS Dartmouth), Arnie the Corsair (UMASS mascot), and lastly the ECE department. The names of the ECE students in the group that helped build this project was also included on the back of the PCB, in addition to the link for the group’s GitHub. An image of the PCB’s layout can be seen below.
+
+**PUT PICTURE OF PHASE 2 LAYOUT**
+
+An important element that was thought of in the PCB design was the orientation of the resistors. Since the coin cell battery had to be slid under the battery holder to power the game, it was vital to entertain the possibility of the battery contacting the top resistors as well as the battery holder at the same time. To prevent the possibility of a short circuit, the resistors connecting to the LED were orientated so that the side of the resistor connected to ground was facing the battery holder. By doing so, the ground side of the battery would come in contact with the side of the resistor that was grounded, therefore no harm to the circuit would be done.  
+
+While reviewing the PCB before finalizing the Gerber files for manufacturing, there were some minor changes that were made to the design. The first of which was increasing the size of the test points on the board. The test points had to be increased to 50 mil so that enough copper could be exposed to allow a test lead to be placed on it for troubleshooting. Another revision made to the board was being sure to label all pins, connectors, and components on the board properly. Above the battery holder “CR2032” was added to the silkscreen layer to specify what type of battery the game operated on. In addition, the names of all connectors on the board were clearly labeled to avoid confusion. The most vital revision made to the board was increasing the text size of the silkscreen. After looking at the properties of the silkscreen text, it was found that the text was too small to be manufactured by the board house. To correct this issue, the text was reformatted to be of size 8mil thick and 60 mil tall. One addition that was made to the board was making a large hole in the bottom left corner to the PCB to allow users to attach the board to a keyring if they decide to do so. Images of the Gerber files for the front and back of the finalized PCB design can be seen below.
+
+**FRONT OF PAHSE 2 PCB GERBER**
+
+**BACK OF PHASE 3 PCB GERBER**
+
+After the Gerber files for the project were submitted, a bill of materials (B.O.M) had to be made to order all of the components needed on the PCB. Seeing as the board was going to be reproduced by UMASS Dartmouth and handed out as an orientation gift, one of the requirements that were made was that the price of all the material had to be under $3.00 per unit of 100. In a real-world application, it is common practice to make a B.O.M for multiple different unit quantities such as units of 100, 500, and 1000. Due to the nature of the project, only the price in quantities of 100 was entertained. The constructed bill of materials for the project can be seen here (**Bill of Materials Link**).
 
 
