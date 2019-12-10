@@ -69,4 +69,19 @@ In the case that the user put the battery in backwards, it was important to incl
 **PAHSE 2 EAGLE SCHEMATIC**
 
 ## Special Features to Note in the Phase 2 Schematic
+1. Decoupling Capacitor circuit
+- The purpose of the decoupling capacitor circuit in the schematic is to oppose any quick changes in voltage that the Atmega328PB might be exposed to. In the case that the voltage suddenly drops, the capacitors apply the necessary voltage to the microprocessor. If there is an excess of voltage, the opposite will occur, and the capacitors will absorb the excess voltage and store it. The use of decoupling capacitors is a common practice when working with microcontroller and microprocessors.
+
+2. Battery/PCB protection circuit 
+- As previously mentioned, the purpose of including this circuit in the design is to protect the PCB in the case that the user accidently inserts the battery the wrong way into the battery holder. Without any protective measures, the PCB would short circuit and the game would no longer be functional. To prevent this from happening a PFET was used in conjunction with a decoupling capacitor that was wired in series with the battery holder.
+
+3. SPI connector
+- It was important to include an SPI connector into the design of the PCB to have a means of debugging the code written for the Catch the Light game as well as prototyping. There is a tag connect on the PCB which makes the design more efficient for production, however it is also a nuisance seeing as it has to be held in place on the board.
+
+4. Pull up/down resistor circuit
+- The pull up and pull-down resistors in the circuit are used for switching between the capacitive touch button and the mechanical push button. The reason for doing this is to have the ability to have two options for controlling the game. It was also planned that this feature would be helpful when testing if the game functions properly in the case that the code for the capacitive touch button was not yet written.
+
+5. Test points on PCB
+- The test points placed around the board in the schematic are to allow for physical debugging of the PCB. This feature allows us to observe the voltage in different areas on  the PCB using a digital multimeter. The test points also served as a method to troubleshoot the PCB in the case that a component was not working.
+
 
