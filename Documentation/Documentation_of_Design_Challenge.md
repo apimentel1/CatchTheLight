@@ -89,7 +89,7 @@ After finishing the schematic and passing EAGLE’s ERC test to check for any wi
 
 In addition to the components present on the board, the requirements document also specified that three different graphics had to be silkscreened on the board. The three graphics were the name of the university (UMASS Dartmouth), Arnie the Corsair (UMASS mascot), and lastly the ECE department. The names of the ECE students in the group that helped build this project was also included on the back of the PCB, in addition to the link for the group’s GitHub. An image of the PCB’s layout can be seen below.
 
-<img src = "Images/Phase2_Layout.jpg" atl = "Front" width="600" align = "center">
+<img src = "Images/Phase2_Layout.jpg" atl = "Front" width="400" align = "center">
 
 An important element that was thought of in the PCB design was the orientation of the resistors. Since the coin cell battery had to be slid under the battery holder to power the game, it was vital to entertain the possibility of the battery contacting the top resistors as well as the battery holder at the same time. To prevent the possibility of a short circuit, the resistors connecting to the LED were orientated so that the side of the resistor connected to ground was facing the battery holder. By doing so, the ground side of the battery would come in contact with the side of the resistor that was grounded, therefore no harm to the circuit would be done.  
 
@@ -124,7 +124,7 @@ After the needed components were placed on the PCB, it was critical to check if 
 
 To test the battery life of the game, the current consumption from the game’s operation was tested. The table below is the data recorded for the current consumption of LED’s as well as the two different states of operation.
 
-<img src = "Images/Current_Test_Table.JPG" atl = "Front" width="600" align = "center">
+<img src = "Images/Current_Test_Table.JPG" atl = "Front" width="400" align = "center">
 
 The data gathered in **Table_** showed that a single blue LED and a single green LED drew much more current than a single red LED. This revealed that the different colored LEDs reduced the battery life, whereas using all red LEDs would have helped to use less power. To simulate a dying battery, two wires were soldered onto the battery holder and attached to a power supply. While the LEDs flashed around in a circle, the voltage on the power supply was slowly reduced. At 2.4V, the blue LEDs stopped functioning, and the green LED followed thereafter at 2.3V. The red LEDs remained operational at 2V. These results were troubling seeing as only 25% of the battery’s life could be used until the LEDs on the game went out, making the game not function as designed.
 
