@@ -7,7 +7,7 @@ For the first phase of the design project, the team was given the challenge of r
 ## Using Fritzing
 Fritzing is an advanced software tool used by designers and engineers alike to transition projects and ideas into a functional prototype. The features that were specifically utilized were the schematic and digital breadboard features. The purpose of using this software was to create a breadboarded schematic of the original game. An image of what the project looked like can be seen in the image below.
 
-<img src = "Images/Original_Catch_the_Light.jpg" atl = "Front" width="300" align = "center">
+<img src = "Images/Right_Original_Catch_the_Light.jpg" atl = "Front" width="300" align = "center">
 
 What made the design of the original Catch the Light game so compelling is that it was designed with using only 7400 series discrete logic. To figure out how the circuit operated, it was crucial that a schematic was created to help reverse engineer the game and figure out how it worked, which was why Fritzing was useful. The first step to creating the Fritzing schematic was to analyze the game in the laboratory and identify the 7400 series chips that were being used on the board. A table with the name of each chip in addition to their respective amounts can be seen in **Table_** below.
 
