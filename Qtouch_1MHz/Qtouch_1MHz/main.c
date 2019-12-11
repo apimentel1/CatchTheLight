@@ -42,7 +42,7 @@ int main(void)
 	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
 	sei();
 	
-	//All_On(5);
+	All_On(5);
 
 	while( 1)
 	{
@@ -108,7 +108,6 @@ void Did_you_catch_the_light()
 
 void Light_Direction()
 {
-	Flag = 0;
 	if (Direction)
 	{
 		Cycle_lights();
@@ -168,7 +167,6 @@ void Cycle_lights_Rev()
 void All_On (int Flashtime)
 {
 	int Count = 0;
-	Flag = 0;
 	while (Count < Flashtime)
 	{
 		PORTB &= 0x0;
@@ -184,7 +182,6 @@ void All_On (int Flashtime)
 		
 		Count++;
 	}
-	Flag = 1;
 }
 
 ISR(TIMER1_COMPA_vect)
