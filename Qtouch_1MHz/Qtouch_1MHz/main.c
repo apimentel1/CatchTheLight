@@ -9,21 +9,17 @@ void Cycle_lights();
 void All_On(int Flashtime);
 void FlashPort(int Led);
 void Cycle_lights_Rev();
-void mydelay(volatile int Delay);
 void Light_Direction();
 
 //PORTD has Leds 1-4, 14-16
 //PORTB has Leds 9-13
 //PORTC has Leds 5-8
-//-------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
-uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
+//----------------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
+volatile uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 volatile int Flashreg = 0;
 volatile int Direction = 1;
 volatile int Delay_Time = 390;
-int Win_time = 0;
-volatile int Flag = 1;
-
-	
+volatile int Win_time = 0;
 
 int main(void)
 {	
@@ -38,30 +34,27 @@ int main(void)
 	atmel_start_init();
 	cpu_irq_enable();
 	
-	TCCR1A = 0x2; // This is in CTC Mode
-	TCCR1B = 0x4; //256 pre
-	TIMSK1 = (1<<OCIE1A);
-	OCR1A = Delay_Time;
+	TCCR1A = (0<<COM1A1)|(0<<COM1B1)|(0<<COM1A0)|(0<<COM1B0)|(0<<WGM11)|(0<<WGM10);//0x2; // This is in CTC Mode
+	TCCR1B = (0<<ICNC1)|(0<<ICES1)|(0<<WGM13)|(1<<WGM12)|(1<<CS12)|(0<<CS11)|(0<<CS10); //256 pre)
+	TCCR1C = (0<<FOC1A)|(0<<FOC1B); //disable force output compare
+	OCR1A = Delay_Time;//Delay_Time;
+	TCNT1 = 0;
+	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
 	sei();
 	
 	//All_On(5);
+
 	while( 1)
 	{
+		///*
 		while (!is_touched())
-			;//PIND = 1<<5;
-		//PORTD &=~(1<<5);
+			;//wait until touched
+			
+		Did_you_catch_the_light(); //check to see if you won
 		
-		Did_you_catch_the_light();
-		
-		//PORTD|=(1<<3);
-		
-		while (is_touched())
-			;//PIND = 1<<2;
-		//PORTD &= ~(1<<2);
-		
-		//PORTD&=(1<<3);*/
-		
-		
+		while (is_touched()) 
+			;//wait until released
+		//*/
 		
 	}
 }
@@ -82,7 +75,7 @@ int is_touched()
 
 void Did_you_catch_the_light()
 {
-	Flag = 0;
+	cli();
 	if(Flashreg == 0)
 	{
 		All_On(5);
@@ -106,44 +99,16 @@ void Did_you_catch_the_light()
 		
 		FlashPort(Flashreg);
 		
-		//mydelay(3906); //delay 1 second
 		_delay_ms(1000);
 		Delay_Time = 390; //100 ms
 		Win_time = 0;
 	}
-	/*
-	if(Flashreg == 0)
-	{
-		All_On(5);
-		Direction ^= 1;
-		if(Win_time > 1)
-		{
-			Delay_Time -= 2;
-			if(Delay_Time < 1)
-			{
-				Delay_Time = 10;
-				Win_time = 0;
-			}
-		}
-		Win_time++;
-	}
-	else
-	{
-		PORTD &= 0x0; //turn off all led
-		PORTB &= 0x0;
-		PORTC &= 0x0;
-		
-		FlashPort(Flashreg);
-		
-		mydelay(100);
-		Delay_Time = 10;
-		Win_time = 0;
-	}//*/
-	Flag = 1;
+	sei();
 }
 
 void Light_Direction()
 {
+	Flag = 0;
 	if (Direction)
 	{
 		Cycle_lights();
@@ -182,9 +147,6 @@ void Cycle_lights()
 	FlashPort(Flashreg); //Flash the light
 	
 	Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
-	
-	mydelay(Delay_Time); //delay 50ms
-	
 }
 
 void Cycle_lights_Rev()
@@ -201,15 +163,12 @@ void Cycle_lights_Rev()
 	{
 		Flashreg = 15; //reset to 15
 	}
-	
-	
-	mydelay(Delay_Time); //delay 100ms
-	
 }
 
 void All_On (int Flashtime)
 {
 	int Count = 0;
+	Flag = 0;
 	while (Count < Flashtime)
 	{
 		PORTB &= 0x0;
@@ -225,20 +184,11 @@ void All_On (int Flashtime)
 		
 		Count++;
 	}
-	
-}
-
-void mydelay(volatile int Delay)
-{
-	/*for(int i = 0; i < Delay_Time; i++)
-	{
-		_delay_ms(10);
-	}*/
-	OCR1A = Delay;
+	Flag = 1;
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	if (Flag)
 	Light_Direction();
+	OCR1A = Delay_Time;//Delay_Time;
 }
