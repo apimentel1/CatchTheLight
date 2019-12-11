@@ -16,10 +16,11 @@ void Light_Direction();
 //PORTC has Leds 5-8
 //----------------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
 volatile uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
+#define Start_time 390 
 volatile int Flashreg = 0;
 volatile int Direction = 1;
-volatile int Delay_Time = 390;
-volatile int Win_time = 0;
+volatile int Delay_Time = Start_time;
+volatile int Win_time = 1; 
 
 int main(void)
 {	
@@ -37,16 +38,15 @@ int main(void)
 	TCCR1A = (0<<COM1A1)|(0<<COM1B1)|(0<<COM1A0)|(0<<COM1B0)|(0<<WGM11)|(0<<WGM10);//0x2; // This is in CTC Mode
 	TCCR1B = (0<<ICNC1)|(0<<ICES1)|(0<<WGM13)|(1<<WGM12)|(1<<CS12)|(0<<CS11)|(0<<CS10); //256 pre)
 	TCCR1C = (0<<FOC1A)|(0<<FOC1B); //disable force output compare
-	OCR1A = Delay_Time;//Delay_Time;
+	OCR1A = Delay_Time;
 	TCNT1 = 0;
 	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
 	sei();
 	
-	All_On(5);
+	All_On(5);//Flash all the lights on
 
 	while( 1)
 	{
-		///*
 		while (!is_touched())
 			;//wait until touched
 			
@@ -54,8 +54,6 @@ int main(void)
 		
 		while (is_touched()) 
 			;//wait until released
-		//*/
-		
 	}
 }
 
@@ -80,12 +78,12 @@ void Did_you_catch_the_light()
 	{
 		All_On(5);
 		Direction ^= 1;
-		if(Win_time > 1)
+		if(Win_time > 2)
 		{
-			Delay_Time -= 78; //subtract 20ms
-			if(Delay_Time < 1)
+			Delay_Time = Delay_Time - 78; //subtract 20ms
+			if(Delay_Time < 78||Win_time==6)
 			{
-				Delay_Time = 390; //reset to 100ms
+				Delay_Time = Start_time; //reset to 100ms
 				Win_time = 0;
 			}
 		}
@@ -100,8 +98,8 @@ void Did_you_catch_the_light()
 		FlashPort(Flashreg);
 		
 		_delay_ms(1000);
-		Delay_Time = 390; //100 ms
-		Win_time = 0;
+		Delay_Time = Start_time; //100 ms
+		Win_time = 1;
 	}
 	sei();
 }
@@ -116,6 +114,7 @@ void Light_Direction()
 	{
 		Cycle_lights_Rev();
 	}
+	//Delay_Time = Delay_Time -78;
 }
 
 void FlashPort(int Led)
@@ -186,6 +185,6 @@ void All_On (int Flashtime)
 
 ISR(TIMER1_COMPA_vect)
 {
+	OCR1A = Delay_Time;
 	Light_Direction();
-	OCR1A = Delay_Time;//Delay_Time;
 }

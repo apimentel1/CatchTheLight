@@ -11,6 +11,7 @@ void FlashPort(int Led);
 void Cycle_lights_Rev();
 void mydelay(volatile int Delay);
 void Light_Direction();
+int Delay_Times(int win_num);
 
 #include <avr/io.h>
 #define F_CPU 1000000UL
@@ -45,13 +46,13 @@ int main(void)
 	
 	
 	//PORTC |= 0x0;
-	TCCR1A = 0x2; // This is in CTC Mode
-	TCCR1B = 0x4; //256 pre
-	TIMSK1 = (1<<OCIE1A);
-	//OCIE1A = Delay_Time;
-	//TIFR1 = (1<<OCIE1A);
-	//TCNT1 = Delay_Time;
+	TCCR1A = (0<<COM1A1)|(0<<COM1B1)|(0<<COM1A0)|(0<<COM1B0)|(0<<WGM11)|(0<<WGM10);//0x2; // This is in CTC Mode
+	TCCR1B = (0<<ICNC1)|(0<<ICES1)|(0<<WGM13)|(1<<WGM12)|(1<<CS12)|(0<<CS11)|(0<<CS10); //256 pre)
+	TCCR1C = (0<<FOC1A)|(0<<FOC1B); //disable force output compare
 	OCR1A = Delay_Time;
+	TCNT1 = 0;
+	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
+	
 	PCICR |= (1 << PCIE1);
 	PCMSK1 |= (1 << PCINT9);
 	sei();
@@ -109,7 +110,7 @@ void Cycle_lights()
 	
 	Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
 	
-	mydelay(Delay_Time); //delay 50ms
+	//mydelay(Delay_Time); //delay 50ms
 	
 }
 
@@ -129,7 +130,7 @@ void Cycle_lights_Rev()
 	}
 	
 	
-	mydelay(Delay_Time); //delay 100ms
+	//mydelay(Delay_Time); //delay 100ms
 	
 }
 
@@ -160,7 +161,7 @@ void mydelay(volatile int Delay)
 		_delay_ms(10);
 	}*/
 	//TCNT1 = Delay;
-	OCR1A = Delay;
+	//OCR1A = Delay;
 }
 
 ISR(PCINT1_vect)
@@ -173,10 +174,12 @@ ISR(PCINT1_vect)
 			Direction ^= 1;
 			if(Win_time > 1)
 			{
-				Delay_Time -= 78; //subtract 20ms
+				//Delay_Time -= 78; //subtract 20ms
+				OCR1A = Delay_Times(Win_time);//Delay_Time;
 				if(Delay_Time < 1)
 				{
 					Delay_Time = 390; //reset to 100ms
+					OCR1A = Delay_Time;
 					Win_time = 0;
 				}
 			}
@@ -198,7 +201,34 @@ ISR(PCINT1_vect)
 	}
 }
 
+int Delay_Times(int win_num)
+{
+	int delay = 0;
+	switch(win_num)
+	{
+		case 0:
+		case 1:
+			delay = 390;
+			break;
+		case 2:
+			delay = 312;
+			break;
+		case 3:
+			delay = 234;
+			break;
+		case 4:
+			delay = 156;
+			break;
+		case 5:
+			delay = 78;
+			break;
+	}
+	return delay;
+	
+}
+
 ISR(TIMER1_COMPA_vect)
 {
+	//OCR1A = Delay_Time;
 	Light_Direction();
 }
