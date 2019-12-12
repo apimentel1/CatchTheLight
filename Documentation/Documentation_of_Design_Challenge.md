@@ -51,7 +51,7 @@ Using Fritzing was great for recreating the project on the breadboard, however i
 ## Using Multisim
 Although Multisim wasn’t required to be used in this project, a schematic of the game was still created with Multisim. The reason behind doing so was to have the ability  to simulate the circuit. Due to Eagle and Fritzing not having the ability to simulate the circuit to check if it was operational, Multisim was the best choice to test whether the schematics we made were correct. This ended up helping our group catch a wiring error that was made in the original schematic seeing as one of the 555 timers wasn’t wired properly. In addition, the simulation software was the main tool that was used to understand how each of the components worked together to make the game work the way that it does. The functional schematic of the project that was created on Multisim can be seen in **Figure_**.
 
-<img src = "Images/Multisim.docx" atl = "Front" width="300" align = "center">
+<img src = "Images/Multisim2.PNG" atl = "Front" width="300" align = "center">
 
 ## How the breadboarded version of the Catch the Light Works
 It was found that at startup, one of the 555 timers (U2) free runs as a multivibrator at 15Hz which in turn makes the LEDs cycle around in a circular pattern. The frequency calculation for the multi-vibrator is f=1/T=1.44/(R_A+2R_B )C=1.44/((2200+2(1000)).000022)=15.58Hz. This frequency calculation represents the speed at which the light “travels” in the circular pattern.  In other words, the LED is high for 15.58 seconds and then low for 15.58 seconds.
