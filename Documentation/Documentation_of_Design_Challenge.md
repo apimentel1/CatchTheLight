@@ -114,7 +114,24 @@ The current design took a different approach than that of the initial. The way i
 
 After figuring out how to cycle the lights, it was time to implement the tactile push button into the code. To accomplish this, a pin change interrupt was utilized. This means that every time the button was pressed, the program would stop and jump to an interrupt vector and do whatever was in it. Once that code inside the interrupt vector was complete the program would resume right where it stopped. This allowed for better light catching accuracy. Once inside the interrupt vector, it is here where it is decided if you successfully caught the light or not. As the value Flashreg corresponded to the LED that was on, it was used to decide if you caught the light. If the value of Flashreg was 0, LED 1, then you won and the direction of the lights would changed. If Flashreg was not 0 then you lost and the led would continue to cycle. Now if you won a second time, the leds would change direction again as well as speed up. The this would continue to happen until you won a total of 6 times in a row or if you lost then the game would reset to the original speed.
 
-<img src = "Images/Code_Table.JPG" atl = "Front" width="600" align = "center">
+| Led | Port | Pin number | Element number |
+|:---: |:---:|:---:|:---:|
+| 1   | D    | 3 | 0 |
+|2|D|2|1|
+|3|D|1|2|
+|4|D|0|3|
+|5|C|5|4|
+|6|C|4|5|
+|7|C|3|6|
+|8|C|2|7|
+|9|B|4|8|
+|10|B|3|9|
+|11|B|2|10|
+|12|B|1|11|
+|13|B|0|12|
+|14|D|7|13|
+|15|D|6|14|
+|16|D|5|15|
 
 ## Using the Pick and Place Machine
 When the phase 2 PCB and the needed components arrived, it was time to populate the PCB. To do so, all surface mount components were placed with the NeoDen pick and place machine. For the machine to be able to recognize the locations of each of the components on the board, it was important to have fiducial markers on the PCB. The x and y axis values for the location of each fiducial marker were specified in the pick and place machine’s software so that the machine knew where the center of each component location was. After transferring the CSV file from EAGLE to the pick and place machine, all of the feeders for the components had to be set in addition to their respective pick heights, place heights, feed rate, and peel strength. Although much of these values were preset by Dr. Viall, knowledge was gained on how to measure the pick and place height of larger components on the board. A primary example of a component that required this was the battery holder. The battery holders were placed on a wooden tray made using the laser cutter machine in lab. A tray had to be made so that the pick and place machine could pick up the holders since the battery holders were packaged in a bag. The tray was placed inside of the pick and place machine and mouse vectors were used to hover the nozzles above the battery holder. Nozzle 4 (which is meant for large parts) was lowered down to the tray until an audible click was heard signifying that the nozzle picked up the component. The value displayed on the computer monitor was then recorded as the pick height for the component. The battery holder was then lowered into its location of the PCB until an audible click was heard. Once again, the value displayed on the monitor was recorded and set as the place height for the component. Understanding how to do this was important for all of the components that were being used so that they could be placed correctly.
@@ -125,6 +142,14 @@ After the needed components were placed on the PCB, it was critical to check if 
 To test the battery life of the game, the current consumption from the game’s operation was tested. The table below is the data recorded for the current consumption of LED’s as well as the two different states of operation.
 
 <img src = "Images/Current_Test_Table.JPG" atl = "Front" width="400" align = "center">
+
+|Quantity|LED|Current Drawn|
+|:---:|:---:|:---:|
+|1|Gren LED ON|1.67mA|
+|1|Blue LED ON|1.74mA|
+|1|Red LED ON|2.1mA|
+|16|All LEDs ON|17.56mA|
+|0|All LEDs OFF|1mA|
 
 The data gathered in **Table_** showed that a single blue LED and a single green LED drew much more current than a single red LED. This revealed that the different colored LEDs reduced the battery life, whereas using all red LEDs would have helped to use less power. To simulate a dying battery, two wires were soldered onto the battery holder and attached to a power supply. While the LEDs flashed around in a circle, the voltage on the power supply was slowly reduced. At 2.4V, the blue LEDs stopped functioning, and the green LED followed thereafter at 2.3V. The red LEDs remained operational at 2V. These results were troubling seeing as only 25% of the battery’s life could be used until the LEDs on the game went out, making the game not function as designed.
 
