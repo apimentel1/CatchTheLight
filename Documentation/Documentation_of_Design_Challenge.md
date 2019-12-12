@@ -17,7 +17,14 @@ What made the design of the original Catch the Light game so compelling is that 
 
 To make a custom IC, the first step that had to be done was clicking on the Core tab in the parts window and scrolling down until the ICs section came into view. Following this, The IC icon was clicked and dragged onto the breadboard window to import the part into the project. After clicking the Inspector window and clicking on the IC properties tab, the name and number of pins on the IC chip could be changed. This process was done for each chip on the board. As for the other components in the project, they were all included in Fritzing’s parts and components library, so they were added into the project normally. A table that includes the name of each component as well as their quantity can be seen in **Table_** below. With all the components imported into the project, the schematic was able to be made and the breadboard schematic was wired after. 
 
-**TABLE OF OTHER COMPONENETS ON BOARD**
+|Quantity|IC Chip Type|
+|:---:|:---:|
+|1|5V Regulator|
+|3|555|
+|1|74138|
+|1|7406|
+|2|7408|
+|1|74163|
 
 ## Challenges Involved With Fritzing	
 Using Fritzing was great for recreating the project on the breadboard, however it didn’t come without its challenges. The biggest problem that we had using Fritzing was with making the schematic. The wire routing on the schematic portion wasn’t very user friendly as compared to Eagle and Multisim. When placing the components onto the 3D breadboard, positioning the legs for capacitors and resistors was made abnormally difficult. Maneuvering the mouse cursor over the legs would frequently route a wire and not recognize that the leg was the component trying to be repositioned. One visual problem with the 3D breadboard involved the positioning of the LEDs. Visually, they are “sent to back” therefore at any other component also “sent to back” would get overlaid by the LED and wouldn’t be visible. With this problem, repositioning the legs of components was tedious. The finished product of the breadboard schematic can be seen below in **Figure_**.
@@ -141,11 +148,9 @@ After the needed components were placed on the PCB, it was critical to check if 
 
 To test the battery life of the game, the current consumption from the game’s operation was tested. The table below is the data recorded for the current consumption of LED’s as well as the two different states of operation.
 
-<img src = "Images/Current_Test_Table.JPG" atl = "Front" width="400" align = "center">
-
 |Quantity|LED|Current Drawn|
 |:---:|:---:|:---:|
-|1|Gren LED ON|1.67mA|
+|1|Green LED ON|1.67mA|
 |1|Blue LED ON|1.74mA|
 |1|Red LED ON|2.1mA|
 |16|All LEDs ON|17.56mA|
