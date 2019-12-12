@@ -24,17 +24,18 @@ What made the design of the original Catch the Light game so compelling is that 
 
 To make a custom IC, the first step that had to be done was clicking on the Core tab in the parts window and scrolling down until the ICs section came into view. Following this, The IC icon was clicked and dragged onto the breadboard window to import the part into the project. After clicking the Inspector window and clicking on the IC properties tab, the name and number of pins on the IC chip could be changed. This process was done for each chip on the board. As for the other components in the project, they were all included in Fritzing’s parts and components library, so they were added into the project normally. A table that includes the name of each component as well as their quantity can be seen in **Table_** below. With all the components imported into the project, the schematic was able to be made and the breadboard schematic was wired after. 
 
-|Quantity|Value|
+
+|Quantity|Capacitor Value|
 |:---:|:---:|
 |1|22uF|
 |2|100uF|
 
-|Quantity|Color|
+|Quantity|LED Color|
 |:---:|:---:|
 |1|Yellow|
 |7|Red|
 
-|Quantity|Value|
+|Quantity|Resistor Value|
 |:---:|:---:|
 |8|330Ω|
 |5|1kΩ|
