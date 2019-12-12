@@ -24,12 +24,23 @@ What made the design of the original Catch the Light game so compelling is that 
 
 To make a custom IC, the first step that had to be done was clicking on the Core tab in the parts window and scrolling down until the ICs section came into view. Following this, The IC icon was clicked and dragged onto the breadboard window to import the part into the project. After clicking the Inspector window and clicking on the IC properties tab, the name and number of pins on the IC chip could be changed. This process was done for each chip on the board. As for the other components in the project, they were all included in Fritzing’s parts and components library, so they were added into the project normally. A table that includes the name of each component as well as their quantity can be seen in **Table_** below. With all the components imported into the project, the schematic was able to be made and the breadboard schematic was wired after. 
 
-|Capacitors|
 |Quantity|Value|
 |:---:|:---:|
 |1|22uF|
 |2|100uF|
 
+|Quantity|Color|
+|:---:|:---:|
+|1|Yellow|
+|7|Red|
+
+|Quantity|Value|
+|:---:|:---:|
+|8|330Ω|
+|5|1kΩ|
+|2|2.2kΩ|
+|1|3.3kΩ|
+|1|47kΩ|
 
 ## Challenges Involved With Fritzing	
 Using Fritzing was great for recreating the project on the breadboard, however it didn’t come without its challenges. The biggest problem that we had using Fritzing was with making the schematic. The wire routing on the schematic portion wasn’t very user friendly as compared to Eagle and Multisim. When placing the components onto the 3D breadboard, positioning the legs for capacitors and resistors was made abnormally difficult. Maneuvering the mouse cursor over the legs would frequently route a wire and not recognize that the leg was the component trying to be repositioned. One visual problem with the 3D breadboard involved the positioning of the LEDs. Visually, they are “sent to back” therefore at any other component also “sent to back” would get overlaid by the LED and wouldn’t be visible. With this problem, repositioning the legs of components was tedious. The finished product of the breadboard schematic can be seen below in **Figure_**.
