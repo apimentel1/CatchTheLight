@@ -12,6 +12,7 @@ void Cycle_lights_Rev();
 void mydelay(volatile int Delay);
 void Light_Direction();
 int Delay_Times(int win_num);
+void Did_you_catch_the_light();
 
 #include <avr/io.h>
 #define F_CPU 1000000UL
@@ -168,37 +169,46 @@ ISR(PCINT1_vect)
 {
 	if( (PINC & (1<<button)) == 0 ) //button goes low
 	{
-		if(Flashreg == 0)
-		{
-			All_On(5);
-			Direction ^= 1;
-			if(Win_time > 1)
-			{
-				//Delay_Time -= 78; //subtract 20ms
-				OCR1A = Delay_Times(Win_time);//Delay_Time;
-				if(Delay_Time < 1)
-				{
-					Delay_Time = 390; //reset to 100ms
-					OCR1A = Delay_Time;
-					Win_time = 0;
-				}
-			}
-			Win_time++;
-		}
-		else
-		{
-			PORTD &= 0x0; //turn off all led
-			PORTB &= 0x0;
-			PORTC &= 0x0;
-			
-			FlashPort(Flashreg);
-			
-			//mydelay(3906); //delay 1 second
-			_delay_ms(1000);	
-			Delay_Time = 390; //100 ms
-			Win_time = 0;
-		}
+		Did_you_catch_the_light();
 	}
+}
+
+void Did_you_catch_the_light()
+{
+	cli();
+	if(Flashreg == 0)
+	{
+		All_On(5);
+		Direction ^= 1;
+		if(Win_time > 1)
+		{
+			Delay_Time = Delay_Times(Win_time);//-= 78; //subtract 20ms
+			//OCR1A = Delay_Times(Win_time); //Delay_Time;
+			if(Delay_Time < 1)
+			{
+				Win_time = 0;
+				Delay_Time = Delay_Times(Win_time);//390; //reset to 100ms
+				//OCR1A = Delay_Times(Win_time);//Delay_Time;
+			}
+		}
+		Win_time++;
+	}
+	else
+	{
+		PORTD &= 0x0; //turn off all led
+		PORTB &= 0x0;
+		PORTC &= 0x0;
+		
+		FlashPort(Flashreg);
+		
+		//mydelay(3906); //delay 1 second
+		_delay_ms(1000);
+		Win_time = 0;
+		Delay_Time = Delay_Times(Win_time);//390; //100 ms
+		
+		//OCR1A = Delay_Times(Win_time);
+	}
+	sei();
 }
 
 int Delay_Times(int win_num)
@@ -224,11 +234,11 @@ int Delay_Times(int win_num)
 			break;
 	}
 	return delay;
-	
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	//OCR1A = Delay_Time;
+	TIFR1 = (1<<OCF1A);
+	OCR1A = Delay_Time;
 	Light_Direction();
 }
