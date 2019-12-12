@@ -177,5 +177,6 @@ The data gathered in the Table above showed that a single blue LED and a single 
 
 To see how long the battery life would last, the data sheet for the Sony CR2032 battery was referenced. The datasheet revealed that the battery could operate for 220mAh at a current draw of .2mA. However, this couldn’t be taken at face value seeing as the PCB draws more current. To test the life of the battery up to 2V, the battery was connected to a Rigol DC electronic load. The machine was set to 17.56mA to see how long it would take the battery to drain to 2V if all LEDs were on. The result would then be a safe estimate as to how long the game would operate for if someone were to constantly win. It was found that the battery dropped to 2V after 1 hour and 54 minutes of a constant current draw of 17.56mA. Seeing as the average current drawn from playing the game is 6mA, it was safe to say that in the game’s current state it would operate for close to 6 hours of constant use. 
 
-
+## Making a Test Plan
+To be sure that the project was working accordingly an [Engineering Test Plan]() was made. In the document, each requirement had a requirement identification number. Each test fell into one of five categories: Hardware, Mechanical, Aesthetic, Software, and cost. Based on what category the requirement fell into, a specific engineering test was developed for it. As the group progressed with the project, it was important to keep conducting the tests in the document to be sure that the project was still operating as designed. 
 
