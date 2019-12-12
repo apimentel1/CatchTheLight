@@ -11,12 +11,6 @@ Fritzing is an advanced software tool used by designers and engineers alike to t
 
 What made the design of the original Catch the Light game so compelling is that it was designed with using only 7400 series discrete logic. To figure out how the circuit operated, it was crucial that a schematic was created to help reverse engineer the game and figure out how it worked, which was why Fritzing was useful. The first step to creating the Fritzing schematic was to analyze the game in the laboratory and identify the 7400 series chips that were being used on the board. A table with the name of each chip in addition to their respective amounts can be seen in **Table_** below.
 
-**PUT IMAGE OF 7400 SERIES CHIP TABLE HERE**
-
- When trying to search for these components in Fritzing’s parts library, it became apparent that Fritzing’s library wasn’t as advanced as the libraries of its competitors. To compensate for this issue, each of the chips had to be custom made using Fritzing’s “Parts editor” tool. This made the process of recreating the circuit in Fritzing much more involved than expected.
-
-To make a custom IC, the first step that had to be done was clicking on the Core tab in the parts window and scrolling down until the ICs section came into view. Following this, The IC icon was clicked and dragged onto the breadboard window to import the part into the project. After clicking the Inspector window and clicking on the IC properties tab, the name and number of pins on the IC chip could be changed. This process was done for each chip on the board. As for the other components in the project, they were all included in Fritzing’s parts and components library, so they were added into the project normally. A table that includes the name of each component as well as their quantity can be seen in **Table_** below. With all the components imported into the project, the schematic was able to be made and the breadboard schematic was wired after. 
-
 |Quantity|IC Chip Type|
 |:---:|:---:|
 |1|5V Regulator|
@@ -25,6 +19,17 @@ To make a custom IC, the first step that had to be done was clicking on the Core
 |1|7406|
 |2|7408|
 |1|74163|
+
+ When trying to search for these components in Fritzing’s parts library, it became apparent that Fritzing’s library wasn’t as advanced as the libraries of its competitors. To compensate for this issue, each of the chips had to be custom made using Fritzing’s “Parts editor” tool. This made the process of recreating the circuit in Fritzing much more involved than expected.
+
+To make a custom IC, the first step that had to be done was clicking on the Core tab in the parts window and scrolling down until the ICs section came into view. Following this, The IC icon was clicked and dragged onto the breadboard window to import the part into the project. After clicking the Inspector window and clicking on the IC properties tab, the name and number of pins on the IC chip could be changed. This process was done for each chip on the board. As for the other components in the project, they were all included in Fritzing’s parts and components library, so they were added into the project normally. A table that includes the name of each component as well as their quantity can be seen in **Table_** below. With all the components imported into the project, the schematic was able to be made and the breadboard schematic was wired after. 
+
+|Capacitors|
+|Quantity|Value|
+|:---:|:---:|
+|1|22uF|
+|2|100uF|
+
 
 ## Challenges Involved With Fritzing	
 Using Fritzing was great for recreating the project on the breadboard, however it didn’t come without its challenges. The biggest problem that we had using Fritzing was with making the schematic. The wire routing on the schematic portion wasn’t very user friendly as compared to Eagle and Multisim. When placing the components onto the 3D breadboard, positioning the legs for capacitors and resistors was made abnormally difficult. Maneuvering the mouse cursor over the legs would frequently route a wire and not recognize that the leg was the component trying to be repositioned. One visual problem with the 3D breadboard involved the positioning of the LEDs. Visually, they are “sent to back” therefore at any other component also “sent to back” would get overlaid by the LED and wouldn’t be visible. With this problem, repositioning the legs of components was tedious. The finished product of the breadboard schematic can be seen below in **Figure_**.
