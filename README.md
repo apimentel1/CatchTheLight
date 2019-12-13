@@ -1,8 +1,8 @@
 # Catch The Light Project
 This game is based off of the popular arcade game Cyclone. For our Junior Design Project, we created a handheld version of the game on a PCB.
 
-### Department Page
-[UmassDartmouth ECE department](https://www.umassd.edu/engineering/ece/)
+### [Department Page](https://www.umassd.edu/engineering/ece/)
+UMASS Dartmouth ECE department page - This page has information reguarding UMASS Dartmouth's Electrical and Computer Engineering Program.
 
 
 ### [Documentation of Design Challenge](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
