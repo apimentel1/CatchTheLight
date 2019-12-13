@@ -187,7 +187,7 @@ Before reviewing the project with Dr. Viall, an [Acceptance Test Plan]() had to 
 ## Project Reflection
 
 ### What Was Accomplished?
-For this project, many of the requirements specified by Dr. Viall were completed to the highest standard. Although the PCB from Phase 1 was not manufactured, our group performed all of the necessary work and research to replicate the design created by Justin Meninno. All Gerber files were successfully constructed and all properties on the board were verified to be manufacturable
+For this project, many of the requirements specified by Dr. Viall were completed to the highest standard. Although the PCB from Phase 1 was not manufactured, our group performed all of the necessary work and research to replicate the design created by Justin Meninno. All Gerber files were successfully constructed and all properties on the board were verified to be manufacturable.
 
 Phase 2 was the most entertaining, yet challenging part of this project. The PCB for the handheld "Catch the Light" game succeeded our expectations and we were thrilled with the outcome. This was due to the careful planning taken to assure that there were'nt any fatal flaws in the design of the PCB. By implementing both a tactile pushbutton as well as a capacitive button, the game was versataille in the way that it was able to be played. The creative idea of implementing multiple levels to the game was successfully completed in the game's code which added to it's charm. In addition to the different levels of speed, after every win the LEDs travel in the opposite direction. 
 
