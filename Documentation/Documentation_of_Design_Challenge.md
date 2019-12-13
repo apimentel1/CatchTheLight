@@ -1,6 +1,8 @@
 # Purpose of this page
 The documentation included in this wiki outlines the process taken to complete the Catch the Light PCB Project. In addition to writing about the knowledge gained from software and datasheets utilized for this project, all of the challenges that were encountered were also discussed.
 
+**Note: For all data sheets for phase 1 and 2 of the project, click [here]()**
+
 # Documentation for Phase 1
 For the first phase of the design project, the team was given the challenge of recreating the interactive “stop the light” game in the display case located in the SENG hallway made by Justin Meninno, a former ECE student at the University of Massachusetts Dartmouth. To understand the depth of the project, a list of [requirements](https://github.com/apimentel1/CatchTheLight/blob/master/Test%20Requirements%20and%20Data/ECE_388_Requirement.pdf) was made based upon Dr. Viall’s vision of the project. The overall vision for the project was to recreate the game on a PCB, solely using surface-mount 7400 series discrete logic components. The reason for doing so was to recreate the game with the exact same components used on the bread-boarded version of the game. In order to begin the first phase of the project, it was critical to understand the game’s circuitry and how it worked using discrete logic. To do so, three different circuit design software programs were utilized: Fritzing, Multisim, and Eagle. 
 
