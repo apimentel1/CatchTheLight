@@ -5,6 +5,6 @@ This game is based off of the popular arcade game Cyclone. For our Junior Design
 [UmassDartmouth ECE department](https://www.umassd.edu/engineering/ece/)
 
 
-### Documentation of Design Challenge
-The link below can be clicked to view thr process taken to complete the project. The documentation includes the data sheets referenced, resources used, and some of the challenges that arose along the way.
-[Documentation](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
+### [Documentation of Design Challenge](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
+The Documentation of Design Challenge gives insight into the process taken to complete the project. The documentation includes the data sheets referenced, resources used, and some of the challenges that arose along the way.
+
