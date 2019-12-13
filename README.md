@@ -7,3 +7,7 @@ UMASS Dartmouth ECE department page - This page has information reguarding UMASS
 
 ### [Documentation of Design Challenge](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
 The Documentation of Design Challenge gives insight into the process taken to complete the project. The documentation includes the data sheets referenced, resources used, and some of the challenges that arose along the way.
+
+
+<img src = "Documentation/Images/Phase_2_Board_populated" atl = "Front" width="600" align = "center">
+<img src = "Documentation/Images/Phase_2_leds_on" atl = "Front" width="600" align = "center">
