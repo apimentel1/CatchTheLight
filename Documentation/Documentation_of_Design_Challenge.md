@@ -182,3 +182,19 @@ To see how long the battery life would last, the data sheet for the Sony CR2032 
 ## Making a Test Plan
 To be sure that the project was working accordingly an [Engineering Test Plan](https://github.com/apimentel1/CatchTheLight/blob/master/Test%20Requirements%20and%20Data/Engineering%20Test%20Requirements%20.xlsx) was made. In the document, each requirement had a requirement identification number. Each test fell into one of five categories: Hardware, Mechanical, Aesthetic, Software, and cost. Based on what category the requirement fell into, a specific engineering test was developed for it. As the group progressed with the project, it was important to keep conducting the tests in the document to be sure that the project was still operating as designed. For the creative/additional features that were added into the game and beyond the scope of the requirements, an additional Engineering Test Plan document was made. These tests were mostly for software seeing as they made sure that the features in the game still worked as originally designed.
 
+Before reviewing the project with Dr. Viall, an [Acceptance Test Plan]() had to be made. This plan is a document that verifies that the requirements requested by the customer have been met. To prove this, the Acceptance Test plan outlines a test procedure thast proves measurable requirements.
+
+##Project Reflection
+
+### What Was Accomplished?
+For this project, many of the requirements specified by Dr. Viall were completed to the highest standard. Although the PCB from Phase 1 was not manufactured, our group performed all of the necessary work and research to replicate the design created by Justin Meninno. All Gerber files were successfully constructed and all properties on the board were verified to be manufacturable
+
+Phase 2 was the most entertaining, yet challenging part of this project. The PCB for the handheld "Catch the Light" game succeeded our expectations and we were thrilled with the outcome. This was due to the careful planning taken to assure that there were'nt any fatal flaws in the design of the PCB. By implementing both a tactile pushbutton as well as a capacitive button, the game was versataille in the way that it was able to be played. The creative idea of implementing multiple levels to the game was successfully completed in the game's code which added to it's charm. In addition to the different levels of speed, after every win the LEDs travel in the opposite direction. 
+
+### What We Would Have Changed
+One part of the project that would have been changed is the way the capacitive touch button was made. By making the whole board a ground plane, it is believed that the capacitive touch button on the board doesnt work as efficently as it could. Although it fulfills the requirement of responding to the user's press in under .1 seconds, it can be seen that the button is quite sensitive. Despite messing around with teh Q-Touch Library's features, the capacitive touchbutton's sensitivity wasn't completely fixed.
+
+Another idea that we wish we could have implemented is the **Extreme Speed Mode**. After trying to fix an error in the code, we stumbled upon an implementation of the game where if the user lands on the green light successfully then the game doesn't pause. Instead, the game continues immediately, forcing the user to keep focus. If more time was available, it would have been fun to implement a secondary mode in the code.
+
+### What wasn't Accomplished
+One part of te project that couldn't be completed was the 
