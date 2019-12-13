@@ -1,8 +1,10 @@
-# Catch The Light
-Based on the arcade game Spin and Win
+# Catch The Light Project
+This game is based off of the popular arcade game Cyclone. For our Junior Design Project, we created a handheld version of the game on a PCB.
 
-[UmassDartmouth ECE department](https://www.umassd.edu/engineering/ece/)
+### [Department Page](https://www.umassd.edu/engineering/ece/)
+UMASS Dartmouth ECE department page - This page has information reguarding UMASS Dartmouth's Electrical and Computer Engineering Program.
 
-Tag connector TC2030-MCP-NL-10 to be used [digikey](https://www.digikey.com/product-detail/en/tag-connect-llc/TC2030-MCP-NL-10/TC2030-MCP-NL-10-ND/2605365)
 
-[Documentation](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
+### [Documentation of Design Challenge](https://github.com/apimentel1/CatchTheLight/blob/master/Documentation/Documentation_of_Design_Challenge.md)
+The Documentation of Design Challenge gives insight into the process taken to complete the project. The documentation includes the data sheets referenced, resources used, and some of the challenges that arose along the way.
+
