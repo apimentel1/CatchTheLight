@@ -7,6 +7,7 @@ uint8_t is_touched();
 void Did_you_catch_the_light();
 void All_On(int Flashtime);
 void FlashPort(int Led);
+void Enter_sleep();
 
 //PORTD has Leds 1-4, 14-16
 //PORTB has Leds 9-13
@@ -14,6 +15,7 @@ void FlashPort(int Led);
 //----------------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
 uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 uint16_t DelayTimes[] = {390, 312, 234, 156, 78};
+uint8_t Cyclestosleep[] = {18, 22, 30, 48, 93};
 #define MaxDelay 4 //five different delays possible, since array starts a 0 -> 5-1=4
 uint8_t Delayreg = 0;
 volatile int Flashreg = 0;
@@ -21,15 +23,17 @@ uint8_t Direction = 1;
 uint8_t Win_time = 1;
 uint8_t StopGame = 0; 
 #define Testpin 0
+uint8_t Cyclecount = 0;
+uint8_t sleep =0;
 
 int main(void)
 {	
 	DDRD = 0xFF;
 	DDRB = 0xFF;
 	DDRC = 0xFF;
-	DDRE = (1<<Testpin);
+	//DDRE = (1<<Testpin);
 	
-	PORTE |= ~(1<<Testpin);
+	//PORTE |= ~(1<<Testpin);
 	PORTB |= 0x0;
 	PORTD |= 0x0; //Turn off leds
 	PORTC |= 0x0;
@@ -51,16 +55,25 @@ int main(void)
 	{
 		if(is_touched()) //check and see if the button was touched
 		{
-			PORTE &= ~(1<<Testpin);
+			//PORTE &= ~(1<<Testpin);
 			StopGame = 1; //stop the interrupt from going off and change the led value
 			Did_you_catch_the_light(); //check to see if you won
 			while (is_touched()) 
 			;//wait until released
 			TCNT1 = 0; //reset time
 			StopGame = 0; //enable interrupt to change led
+			Cyclecount = 0; //reset time count
+			sleep = 0;
 		}
-		PORTE |= (1<<Testpin);
-		FlashPort(Flashreg); //strobe the led
+		//PORTE |= (1<<Testpin);
+		if(!sleep)
+		{
+			FlashPort(Flashreg); //strobe the led	
+		}
+		if (Cyclecount >= Cyclestosleep[Delayreg])
+		{
+			Enter_sleep();
+		}
 	}
 }
 
@@ -147,6 +160,10 @@ ISR(TIMER1_COMPA_vect)
 		if (Direction)
 		{
 			Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
+			if (Flashreg == 0)
+			{
+				Cyclecount++;
+			}
 		}
 		else
 		{
@@ -155,7 +172,19 @@ ISR(TIMER1_COMPA_vect)
 			if (Flashreg < 0) //when below 0
 			{
 				Flashreg = 15; //reset to 15
+				Cyclecount++;
 			}
 		}
 	}
+}
+
+void Enter_sleep()
+{
+	//add code to go to sleep
+	PORTD &= 0x00; //turn off all led
+	PORTB &= 0x00;
+	PORTC &= 0x00;
+	Cyclecount = 0;
+	StopGame = 1;
+	sleep = 1;
 }
