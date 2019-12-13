@@ -5,11 +5,8 @@
 
 uint8_t is_touched();
 void Did_you_catch_the_light();
-//void Cycle_lights();
 void All_On(int Flashtime);
 void FlashPort(int Led);
-//void Cycle_lights_Rev();
-//void Light_Direction();
 
 //PORTD has Leds 1-4, 14-16
 //PORTB has Leds 9-13
@@ -17,7 +14,7 @@ void FlashPort(int Led);
 //----------------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
 uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 uint16_t DelayTimes[] = {390, 312, 234, 156, 78};
-uint8_t MaxWins = 4;
+#define MaxDelay 4 //five different delays possible, since array starts a 0 -> 5-1=4
 uint8_t Delayreg = 0;
 volatile int Flashreg = 0;
 uint8_t Direction = 1;
@@ -36,75 +33,64 @@ int main(void)
 	
 	atmel_start_init();
 	cpu_irq_enable();
-	
+	cli();
 	TCCR1A = (0<<COM1A1)|(0<<COM1B1)|(0<<COM1A0)|(0<<COM1B0)|(0<<WGM11)|(0<<WGM10);//0x2; // This is in CTC Mode
 	TCCR1B = (0<<ICNC1)|(0<<ICES1)|(0<<WGM13)|(1<<WGM12)|(1<<CS12)|(0<<CS11)|(0<<CS10); //256 pre)
 	TCCR1C = (0<<FOC1A)|(0<<FOC1B); //disable force output compare
 	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
 	OCR1A = DelayTimes[0];
+	
+	All_On(5);//Flash all the lights on
 	sei();
 	
-	StopGame = 1;
-	All_On(5);//Flash all the lights on
-	StopGame = 0;
-
 	while( 1)
 	{
-		if(is_touched())
+		if(is_touched()) //check and see if the button was touched
 		{
-			StopGame = 1;
-			Did_you_catch_the_light();
+			StopGame = 1; //stop the interrupt from going off and change the led value
+			Did_you_catch_the_light(); //check to see if you won
 			while (is_touched()) 
 			;//wait until released
-			TCNT1 = 0;
-			StopGame = 0;
+			TCNT1 = 0; //reset time
+			StopGame = 0; //enable interrupt to change led
 		}
-		/*while (!is_touched())
-			;//wait until touched
-			
-		Did_you_catch_the_light(); //check to see if you won
-		
-		*/
-		FlashPort(Flashreg);
+		FlashPort(Flashreg); //strobe the led
 	}
 }
 
 uint8_t is_touched()
 {	
 	touch_process();
-	if ((get_sensor_state(0) & 0x80) != 0)
-	{
-		return 1;
-	}
-	return 0;
+	return (get_sensor_state(0) & 0x80) != 0;//return 1 if touched
+											//return 0 if not touched
 }
 
 void Did_you_catch_the_light()
 {
-	if(Flashreg == 0)
+	if(Flashreg == 0) //is led 1 on
 	{
-		All_On(5);
-		Direction ^= 1;
-		if(Win_time > 2)
+		All_On(5); //flash all leds to show that you won
+		Direction ^= 1; //change direction
+		if(Win_time > 2)//if you win twice
 		{
-			Delayreg++;
-			if(Delayreg >MaxWins)
+			Delayreg++; //increase the speed
+			if(Delayreg > MaxDelay) //if delayreg is greater then the Maxdelay 
 			{
-				Delayreg = 0;
+				Delayreg = 0; //you beat the game and reset
 				Win_time = 0;
 			}
-			OCR1A = DelayTimes[Delayreg];
+			OCR1A = DelayTimes[Delayreg]; //update CTC register 
 		}
 		Win_time++;
 	}
 	else
 	{
-		if(Direction & (Flashreg>12) || !Direction & (Flashreg<4))
-			Direction ^=1;
-		Delayreg = 0;
-		OCR1A = DelayTimes[0]; //100 ms
-		_delay_ms(500);
-		Win_time = 1;
+		if(Direction & (Flashreg>12) || !Direction & (Flashreg<4)) //stop you from cheating!!!!!
+			Direction ^=1; //change the direction if you are 3 leds before reaching led 1
+		Delayreg = 0; //reset to start speed
+		OCR1A = DelayTimes[0]; //update CTC register 
+		_delay_ms(500); //wait
+		Win_time = 1; //reset win times
 	}
 }
 
@@ -144,7 +130,6 @@ void All_On (int Flashtime)
 		PORTD &= 0x08; //all off but PD3 the target led
 		PORTC &= 0x0;
 		_delay_ms(100);
-		//mydelay(10); //100ms delay
 		Count++;
 	}
 }
