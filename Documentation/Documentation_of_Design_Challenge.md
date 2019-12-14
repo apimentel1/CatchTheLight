@@ -181,7 +181,7 @@ To see how long the battery life would last, the data sheet for the Sony CR2032 
 
 Another requirement that had to be tested was the capacitive touch button's response time. In the requirements, it was specified that the capacitive touch button had to respons to the user's touch in less than 100ms. When observing the buttons response time under the oscilloscope, the average time that it took for the button to respond to the user's press was 18ms. A screenshot of the oscilloscope that demonstrates this can be seen in the image below.
 
-img src = "Images/Button_time.bmp" atl = "Front" width="600" align = "center">
+<img src = "Images/Button_time.bmp" atl = "Front" width="600" align = "center">
 
 ## Making a Test Plan
 To be sure that the project was working accordingly an [Engineering Test Plan](https://github.com/apimentel1/CatchTheLight/blob/master/Test%20Requirements%20and%20Data/Engineering%20Test%20Requirements%20.xlsx) was made. In the document, each requirement had a requirement identification number. Each test fell into one of five categories: Hardware, Mechanical, Aesthetic, Software, and cost. Based on what category the requirement fell into, a specific engineering test was developed for it. As the group progressed with the project, it was important to keep conducting the tests in the document to be sure that the project was still operating as designed. For the creative/additional features that were added into the game and beyond the scope of the requirements, an additional Engineering Test Plan document was made. These tests were mostly for software seeing as they made sure that the features in the game still worked as originally designed.
