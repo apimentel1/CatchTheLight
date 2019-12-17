@@ -15,7 +15,7 @@ void Enter_sleep();
 //----------------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
 uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 uint16_t DelayTimes[] = {390, 312, 234, 156, 78};
-uint8_t Cyclestosleep[] = {18, 22, 30, 48, 93};
+uint8_t Cyclestosleep[] = {19, 23, 31, 49, 94};
 #define MaxDelay 4 //five different delays possible, since array starts a 0 -> 5-1=4
 uint8_t Delayreg = 0;
 volatile int Flashreg = 0;
@@ -23,6 +23,7 @@ uint8_t Direction = 1;
 uint8_t Win_time = 1;
 uint8_t StopGame = 0; 
 #define Testpin 0
+#define Button 1
 uint8_t Cyclecount = 0;
 uint8_t sleep =0;
 
@@ -30,13 +31,14 @@ int main(void)
 {	
 	DDRD = 0xFF;
 	DDRB = 0xFF;
-	DDRC = 0xFF;
+	DDRC = 0xFF & ~(1<<Button);
 	//DDRE = (1<<Testpin);
 	
 	//PORTE |= ~(1<<Testpin);
+	PORTC |= (1<<Button);
 	PORTB |= 0x0;
 	PORTD |= 0x0; //Turn off leds
-	PORTC |= 0x0;
+	//PORTC |= 0x0;
 	
 	atmel_start_init();
 	cpu_irq_enable();
@@ -47,15 +49,18 @@ int main(void)
 	TIMSK1 = (0<<ICIE1)|(0<<OCIE1B)|(1<<OCIE1A)|(0<<TOIE1);
 	OCR1A = DelayTimes[0];
 	
+	PCICR |= (1 << PCIE1);
+	PCMSK1 |= (1 << PCINT9);
+	sei();
+	
 	All_On(5);//Flash all the lights on
-	PORTE |=(1<<Testpin);
 	sei();
 	
 	while( 1)
 	{
+		/*
 		if(is_touched()) //check and see if the button was touched
 		{
-			//PORTE &= ~(1<<Testpin);
 			StopGame = 1; //stop the interrupt from going off and change the led value
 			Did_you_catch_the_light(); //check to see if you won
 			while (is_touched()) 
@@ -63,9 +68,7 @@ int main(void)
 			TCNT1 = 0; //reset time
 			StopGame = 0; //enable interrupt to change led
 			Cyclecount = 0; //reset time count
-			sleep = 0;
-		}
-		//PORTE |= (1<<Testpin);
+		}*/
 		if(!sleep)
 		{
 			FlashPort(Flashreg); //strobe the led	
@@ -178,13 +181,36 @@ ISR(TIMER1_COMPA_vect)
 	}
 }
 
+ISR(PCINT1_vect)
+{
+	if((PINC & (1<<Button)) == 0)
+	{
+		StopGame = 1; //stop the interrupt from going off and change the led value
+		Did_you_catch_the_light(); //check to see if you won
+		while (is_touched())
+		;//wait until released
+		TCNT1 = 0; //reset time
+		StopGame = 0; //enable interrupt to change led
+		Cyclecount = 0; //reset time count
+	}
+	
+}
+
 void Enter_sleep()
 {
 	//add code to go to sleep
 	PORTD &= 0x00; //turn off all led
 	PORTB &= 0x00;
 	PORTC &= 0x00;
+	TIMSK1 &= ~(1<<OCIE1A);
 	Cyclecount = 0;
 	StopGame = 1;
 	sleep = 1;
+	
+	while(!is_touched())
+		;//wait until touched
+	TIMSK1 |= (1<<OCIE1A);
+	StopGame = 0; //enable interrupt to change led
+	Cyclecount = 0; //reset time count
+	sleep = 0;
 }
