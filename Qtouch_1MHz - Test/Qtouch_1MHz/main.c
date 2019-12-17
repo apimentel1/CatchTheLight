@@ -22,20 +22,21 @@ volatile int Flashreg = 0;
 uint8_t Direction = 1;
 uint8_t Win_time = 1;
 uint8_t StopGame = 0; 
-#define Testpin 0
+#define Pulluppin 0
 #define Button 1
 uint8_t Cyclecount = 0;
 uint8_t sleep =0;
+uint8_t is_Button = 0;
 
 int main(void)
 {	
 	DDRD = 0xFF;
 	DDRB = 0xFF;
-	DDRC = 0xFF & ~(1<<Button);
+	DDRC = 0xFF & ~(1<<Button) & ~(1<<Pulluppin);
 	//DDRE = (1<<Testpin);
 	
 	//PORTE |= ~(1<<Testpin);
-	PORTC |= (1<<Button);
+	PORTC |= (1<<Button) | (1<<Pulluppin);
 	PORTB |= 0x0;
 	PORTD |= 0x0; //Turn off leds
 	//PORTC |= 0x0;
@@ -50,7 +51,7 @@ int main(void)
 	OCR1A = DelayTimes[0];
 	
 	PCICR |= (1 << PCIE1);
-	PCMSK1 |= (1 << PCINT9);
+	PCMSK1 |= (1 << PCINT9)|(1<<PCINT8);
 	sei();
 	
 	All_On(5);//Flash all the lights on
@@ -58,8 +59,7 @@ int main(void)
 	
 	while( 1)
 	{
-		/*
-		if(is_touched()) //check and see if the button was touched
+		if(is_touched() && !is_Button) //check and see if the button was touched
 		{
 			StopGame = 1; //stop the interrupt from going off and change the led value
 			Did_you_catch_the_light(); //check to see if you won
@@ -68,7 +68,7 @@ int main(void)
 			TCNT1 = 0; //reset time
 			StopGame = 0; //enable interrupt to change led
 			Cyclecount = 0; //reset time count
-		}*/
+		}
 		if(!sleep)
 		{
 			FlashPort(Flashreg); //strobe the led	
@@ -193,6 +193,18 @@ ISR(PCINT1_vect)
 		StopGame = 0; //enable interrupt to change led
 		Cyclecount = 0; //reset time count
 	}
+	else 
+	{
+		_delay_ms(100); //debounce
+		if((PINC & (1<<Pulluppin)) == 0)
+		{
+			is_Button = 1;
+		}
+		else if((PINC & (1<<Pulluppin)) == 1)
+		{
+			is_Button == 0;
+		}
+	}
 	
 }
 
@@ -203,9 +215,11 @@ void Enter_sleep()
 	PORTB &= 0x00;
 	PORTC &= 0x00;
 	TIMSK1 &= ~(1<<OCIE1A);
-	Cyclecount = 0;
 	StopGame = 1;
 	sleep = 1;
+	
+	if(Direction & (Flashreg>12) || !Direction & (Flashreg<4)) //stop you from cheating!!!!!
+		Direction ^=1; //change the direction if you are 3 leds before reaching led 1
 	
 	while(!is_touched())
 		;//wait until touched

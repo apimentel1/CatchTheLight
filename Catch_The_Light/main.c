@@ -13,20 +13,20 @@ void Cycle_lights_Rev();
 void mydelay(volatile int Delay);
 void Light_Direction();
 void Did_you_catch_the_light();
+void Enter_sleep();
 
 #include <avr/io.h>
 #define F_CPU 1000000UL
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-//uint16_t Ledtab [] = {0x08, 0x04, 0x02, 0x01, 0x20, 0x16, 0x08, 0x04, 0x16, 0x08, 0x04, 0x02, 0x01, 0x80, 0x40, 0x20};
 //PORTD has Leds 1-4, 14-16
 //PORTB has Leds 9-13
 //PORTC has Leds 5-8
 //-------------Led # 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16
 uint8_t Ledtab [] = {3, 2, 1, 0, 5, 4, 3, 2, 4, 3, 2, 1, 0, 7, 6, 5};
 uint8_t Delay_Times[] = {10, 8, 6, 4, 2};
-
+uint8_t Cyclestosleep[] = {19, 23, 31, 49, 94};
 
 int Flashreg = 0;
 #define button 1
@@ -35,6 +35,8 @@ volatile int Delay; //100ms with 256 pre
 int Delayreg = 0;
 #define MaxDelay 4
 int Win_time = 0;
+uint8_t Sleep = 0;
+uint8_t Cycle_count = 0;
 
 int main(void)
 {
@@ -56,11 +58,16 @@ int main(void)
 	All_On(5);
 	sei();
 
-	
-
     while (1) 
     {
-		Light_Direction();
+		if(!Sleep)
+		{
+			Light_Direction();	
+		}
+		if (Cycle_count >= Cyclestosleep[Delayreg])
+		{
+			Enter_sleep();
+		}
     }
 }
 
@@ -116,7 +123,8 @@ void Cycle_lights()
 	FlashPort(Flashreg); //Flash the light
 	
 	Flashreg = (Flashreg + 1) & 15; //Increment Flashreg until 15 then reset to 0
-	
+	if(Flashreg == 0)
+		Cycle_count++;
 	mydelay(Delay); //delay 50ms
 	
 }
@@ -134,6 +142,7 @@ void Cycle_lights_Rev()
 	if (Flashreg < 0) //when below 0
 	{
 		Flashreg = 15; //reset to 15
+		Cycle_count++;
 	}
 	
 	
@@ -172,6 +181,8 @@ ISR(PCINT1_vect)
 	if( (PINC & (1<<button)) == 0 ) //button goes low
 	{
 		Did_you_catch_the_light(Flashreg);
+		Sleep  = 0;
+		Cycle_count = 0;
 	}
 }
 
@@ -208,3 +219,12 @@ void Did_you_catch_the_light(int LED)
 	Flashreg = LED;
 }
 
+
+void Enter_sleep()
+{
+	Sleep = 1;
+	PORTD &= 0x00; //turn off all led
+	PORTB &= 0x00;
+	PORTC &= 0x00;
+	Cycle_count = 0;
+}
