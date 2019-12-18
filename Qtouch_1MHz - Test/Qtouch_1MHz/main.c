@@ -52,7 +52,6 @@ int main(void)
 	
 	PCICR |= (1 << PCIE1);
 	PCMSK1 |= (1 << PCINT9)|(1<<PCINT8);
-	sei();
 	
 	All_On(5);//Flash all the lights on
 	sei();
@@ -187,8 +186,6 @@ ISR(PCINT1_vect)
 	{
 		StopGame = 1; //stop the interrupt from going off and change the led value
 		Did_you_catch_the_light(); //check to see if you won
-		while (is_touched())
-		;//wait until released
 		TCNT1 = 0; //reset time
 		StopGame = 0; //enable interrupt to change led
 		Cyclecount = 0; //reset time count
